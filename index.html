@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Read Rover: Book Inventory Tool</title>
+        <meta charset="UTF-8">
+        <meta name="description" content="Keep track of book inventory and order with the most user-friendly and visually appealing reading list tool out there">
+        <meta name="author" content="Andrew Deal">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" href="logo.png">
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <div id="topButtons">
+            <button onclick="reset()">Reset</button>
+            <button onclick="exportCopy()">Export</button>
+            <button onclick="importData()">Import</button>
+            <button onclick="">Mass Import</button>
+        </div>
+
+        <!--
+        <ul>
+            <li><button onclick="reset()">Reset</button></li>
+            <li><button onclick="save()">Save</button></li>
+            <li><button>Test</button></li>
+            <li><button>Test</button></li>
+            <li><button>Test</button></li>
+            <li><button>Test</button></li>
+            <li><button>Test</button></li>
+            <li><button>Test</button></li>
+            <li><button>Test</button></li>
+            <li><button>Test</button></li>
+        </ul>
+        -->
+
+        <div id="main">
+            <div id="topDiv"> <!--FINISH GETTING THE TOP LOOKING GOOD ASAP-->
+            <img id="titleLogo" src="logov2.png">
+            <p id="pDesc">
+                Have you ever felt confused when looking through your comic books, unsure of what you're even looking at? Sure, the books have numbers on them,
+                but as you know, those don't do anything when you're trying to figure out what order to read them in. That's why I created Read Rover, the most cutting-edge website 
+                for managing your personal library. Read Rover's user-friendly platform allows you to create a comprehensive inventory of your books in an easy to follow list.
+                I encourage you to check out all of the site's features, and as a comic fan myself, I'm always looking to add more! 
+                Of course, all books are welcome, not just comics, so I encourage you to create a digital inventory of your whole bookshelf!
+                I hope Read Rover will be the perfect tool for you to organize and manage your library! <br>
+            </p>
+            </div>
+            
+            <!--Form that adds books-->
+            <div class="content">
+                    <form>
+                        <label for="publisher">Publisher:</label>
+                        <input type="text" id="publisher" name="publisher">
+                        <label for="continuity">Continuity: </label>
+                        <input type="text" id="continuity" name="continuity">
+
+                        <br> 
+
+                        <label for="series">Series:</label>
+                        <input type="text" id="series" name="series">
+                        <select id="numberType" name="numberType">
+                            <option value="Number">Number:</option>
+                            <option value="Volume">Volume:</option>
+                            <option value="Book">Book:</option>
+                            <option value="Compendium">Compendium:</option>
+                            <option value="Un-numbered">No Number</option>
+                        </select>
+                        <input type="number" id="number" name="number">
+
+                        <br>
+
+                        <label for="name">Title:</label>
+                        <input type="text" id="name" name="name">
+                        
+                        <br>
+
+                        <label for="format">Format:</label>
+                        <select id="format" name="format">
+                            <option value="Single Comic">Single Comic</option>
+                            <option value="Paperback">Paperback</option>
+                            <option value="Hardcover">Hardcover</option>
+                            <option value="Omnibus">Omnibus</option>
+                            <option value="Compendium">Compendium</option>
+                            <option value="Manga">Manga</option>
+                            <option value="Manhwa">Manhwa</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <label for="name" id="readLabel">Read?</label>
+                        <input type="checkbox" id="read" name="read">
+                        <label>Rating:</label>
+                        <img src="emptyStar.png" id="star0" class="formStar">
+                        <img src="emptyStar.png" id="star1" class="formStar">
+                        <img src="emptyStar.png" id="star2" class="formStar">
+                        <img src="emptyStar.png" id="star3" class="formStar">
+                        <img src="emptyStar.png" id="star4" class="formStar">
+                        
+                        <br>
+                        
+                        <label for="notes">Notes:</label>
+                        <input type="text" id="notes" name="notes">
+
+                        <br>
+
+                        <label for="imgLink">Link to cover image:</label>
+                        <input type="text" id="imgLink" name="imgLink">
+
+                        <br>
+                        <div class="centeringDiv">
+                            <button type="button" id="addBookBtn1">Add before #</button>
+                            <input type="number" id="insertNumber" name="insertNumber" min="1">
+                            <button type="button" id="addBookBtn2">Add after #</button>
+                        </div>
+                    </form> 
+            </div>
+        </div>
+
+        <!--Section for the modal window to pop up-->
+        <div class="modal hidden" id="modalWindow">
+            <img src="alert.png">
+            <h1>Are you sure?</h1>
+            <h3>Deleted items are deleted forever!</h3>
+            <button id="leftModalBtn">Yes, delete it!</button>
+            <p style="display:inline">&nbsp;&nbsp;</p>
+            <button id="rightModalBtn">Cancel</button>
+        </div>
+        <div class="overlay hidden" id="overlay"></div>
+
+        <script src="listMaker.js"></script>
+    </body>
+</html>

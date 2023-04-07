@@ -1,0 +1,360 @@
+
+/* Add media query for mobile styling later */
+
+body {
+    background: url("backgroundv1.jpg");
+    background-size: 100%;
+    margin: 0;
+    margin-bottom: 8;
+    /*background-repeat: no-repeat;
+    background-color: powderblue;*/
+}
+
+/*Top stuff*/
+#topButtons {
+    margin-top: 1vh;
+    text-align: center;
+}
+
+#topButtons > button {
+    background-color: rgb(53, 53, 53);
+    color: white;
+    font-size: calc(5px + 0.9vw);
+}
+
+#titleLogo {
+    width: 49%;
+}
+
+#pDesc {
+    display: inline-block;
+    width: 50%;
+    vertical-align: top;
+    color: white;
+    text-align: right;
+    font-size: 70%;
+}
+
+/*Horizontal List at the top
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: rgb(204, 35, 35);
+    border: 1px solid black;
+}
+  
+li {
+    float: left;
+}
+  
+li button {
+    border: 0px solid black;
+    border-left: 1px solid rgb(0, 0, 0);
+    display: block;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    background-color: rgba(0, 0, 0, 0);
+    width: 9.98vw;
+    font-size: calc(5px + 0.8vw);
+}
+
+li button:hover {
+    background-color: #630000;
+}*/
+
+/*Main sections*/
+#main { 
+    background-color: rgb(53, 53, 53);
+    border: 1px solid black;
+    width: 50vw;
+    min-width: 550px;
+    margin-top: 1vh;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 1.5vw;
+}
+
+.content {
+    text-align: center;
+    background-color: rgb(202, 202, 202);
+    border-top: 1px solid black;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    line-height: 2;
+}
+
+.alignRight {
+    float: right;
+}
+
+/*
+@media screen and (min-width: 480px) {
+    body {
+      background-color: lightgreen;
+    }
+  }*/
+
+.content > form {
+    font-size: calc(10px + 0.9vw);
+}
+
+.content > form > label {
+    display: inline-block
+}
+
+.content > form > input {
+    font-size: calc(6px + 0.9vw);
+}
+
+/*----------------------------*/
+/* Specific Form input areas */
+#publisher, #continuity {
+    width: 31%;
+}
+
+#series {
+    width: 45%;
+}
+
+#numberType {
+    background-color: rgba(0, 0, 0, 0);
+    text-align: center;
+    font-size: calc(9px + 0.9vw);
+    font-family: "Times New Roman", Times, serif; 
+    border: white;
+}
+
+#number {
+    width: 15%;
+}
+
+#name, #notes {
+    width: 82%;
+}
+
+#format {
+    width: 25%;
+    text-align: center;
+    font-size: calc(9px + 0.9vw);
+    font-family: "Times New Roman", Times, serif; 
+}
+
+#readLabel {
+    margin-left: 1vw;
+}
+
+#read {
+    margin-right: 1vw;
+}
+
+input[type=checkbox] {
+    transform: scale(1.2);
+}
+
+.formStar, .smallStar{
+    position: relative;
+    top: 1vh;
+    width: 5%; 
+}
+
+#imgLink {
+    width: 65%
+}
+
+#addBookBtn1, #addBookBtn2 {
+    font-size: calc(5px + 0.9vw);
+    white-space: nowrap;
+    text-overflow: clip;
+}
+
+#insertNumber {
+    width: 5vw;
+    font-size: calc(4px + 0.9vw);
+}
+
+.centeringDiv {
+    width: 33%;
+    margin-top: 5px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    justify-content: space-around;
+}
+/*----------------------------*/
+/*---------------------------*/
+
+/* MAIN SECTION FOR BOOKS */
+.book {
+    text-align: left;
+}
+
+details {
+    margin-left: 3%;
+    margin-right: 3%; /*Change units later to not use px*/
+}
+
+.insideDetails {
+    background-color: rgb(185, 182, 182);
+    padding: 10px;
+    text-align: center;
+}
+
+summary {
+    font-size: calc(10px + 0.9vw);
+}
+
+.leftSide {
+    float: left;
+    width: 49%;
+    margin-bottom: 10px;
+}
+
+.rightSide {
+    float: right;
+    width: 49%;
+    margin-bottom: 10px;
+    border-left: 1px dashed black;
+}
+
+.insideDetails > span > img {
+    display: inline;
+    width: 75%;
+}
+
+.insideDetails p {
+    color:rgb(99, 99, 99);
+    display: inline;
+    margin-left: 2px;
+    margin-right: 2px;
+    font-size: calc(10px + 0.9vw);
+}
+
+.insideDetails > span > input[type=checkbox] {
+    border: 1px solid rgb(141, 141, 141);
+}
+
+.smallStar {
+    width: 10%;
+    display: inline; 
+}
+
+.insideDetails > textarea {
+    width: 99%;
+    resize: vertical;
+    font-size: 1.3vw;
+    display: block;
+    font-size: calc(10px + 0.9vw);
+}
+
+.posContainer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+#upDownContainer {
+    display: flex;
+    justify-content: space-between;
+    width: 35%;
+}
+
+.posButtons {
+    font-size: calc(5px + 0.9vw);
+}
+
+#up {
+    background-color: aliceblue;
+}
+
+#down {
+    background-color: aliceblue;
+}
+
+#delete {
+    background-color: rgb(255, 61, 61);
+}
+
+/* CLASSES TO MAKE MODAL WORK */
+.hidden {
+    display: none;
+  }
+  
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+  
+    background-color: rgb(255, 255, 255);
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-radius: 5px;
+    box-shadow: 0 3rem 5rem rgba(0, 0, 0, 0.3);
+    z-index: 10;
+
+    text-align: center;
+}
+
+@media screen and (max-width: 600px) {
+    .modal {
+      width: 40%;
+    }
+}
+  
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(3px);
+    z-index: 5;
+}
+
+.modal > img {
+    width: 20%;
+    margin-left: 40%;
+    margin-right: 40%;
+    margin-bottom: 5px;
+}
+
+.modal > h1 {
+    margin-top: 0px;
+    margin-bottom: 10px;
+}
+
+.modal > h3 {
+    margin-top: 0px;
+    margin-bottom: 12px;
+    color:rgb(53, 53, 53)
+}
+
+.modal > button {
+    /*text-align: right;*/
+    font-size: 15px;
+    color: white;
+    border-radius: 5px;
+}
+
+#leftModalBtn {
+    background-color: rgb(46, 184, 238);
+}
+
+#rightModalBtn {
+    background-color: rgb(221, 56, 56);
+}
+/* -------------------------- */
+
+
+
+
+
+
