@@ -50,10 +50,12 @@ body {
 
 #toolButtons button {
     width: 13%;
+    max-width: 70px;
 }
 
 #toolButtons img {
     width: 100%;
+    max-width: 60px;
 }
 
 #filterDetails {
@@ -66,6 +68,49 @@ body {
     border: 2px solid black;
     font-size: calc(5px + 0.9vw);
 }
+
+#topHalfFilterMenu {
+    display: none;
+    justify-content: space-around;
+}
+
+#topHalfFilterMenu > p {
+    font-size: calc(7px + 0.9vw);
+}   
+
+#topHalfFilterMenu > select {
+    position: relative;
+    top: 1.85vh;
+    width: 9vw;
+    height: 2.5vw;
+
+    text-align: center;
+    font-size: calc(6px + 0.9vw);
+    font-family: "Times New Roman", Times, serif; 
+}  
+
+#topHalfFilterMenu > input[type=text] {
+    position: relative;
+    top: 1.85vh;
+    width: 9vw;
+    height: 2vw;
+
+    text-align: center;
+    font-size: calc(6px + 0.8vw);
+    font-family: "Times New Roman", Times, serif; 
+}  */ 
+
+#bottomHalfFilterMenu {
+    display: none;
+}
+
+#bottomHalfFilterMenu > button {
+    display: none;
+    font-size: calc(5px + 0.7vw);
+    margin-left: 0.3vw;
+    margin-right: 0.3vw;
+}
+
 
 /*Main sections*/
 #main { 
@@ -200,9 +245,19 @@ input[type=checkbox] {
 }
 
 .centeringDiv > input[type=number] {
-    width: 5vw;
+    width: 4vw;
+    height: 1.5vw;
     font-size: calc(4px + 0.9vw);
 }
+
+#addDividerBtn {
+    height: 2vw;
+}
+
+#dividerTitleInput {
+    height: 1.5vw;
+}
+
 /*----------------------------*/
 /*---------------------------*/
 
@@ -298,11 +353,12 @@ summary {
     background-color: rgb(255, 61, 61);
 }
 
-/* CLASSES TO MAKE MODAL WORK */
 .hidden {
     display: none;
-  }
+}
   
+/* CLASSES TO MAKE MODAL WORK */
+
 .modal {
     position: fixed;
     top: 50%;

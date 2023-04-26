@@ -5,15 +5,19 @@
     To Do:
 
     Refactor if possible?
-    Fix CSS (and media query?)
+    Continue to improve and refactor CSS (and media query?) 
+    Set max width and height for the box on the left proportionate to the vw and vh?
     Write Documentation
     Maybe add more tools, and a label that says "tools"
-    Simple Searchbar/filter system
-    Some way to keep track of crossovers and crossover reading order
+    Simple Searchbar/filter system 
+    Some way to keep track of crossovers and crossover reading order (connect somehow?)
+    Work on dividers in spare time
 
 */////////////////////////////
 
-////  Get Elements ////
+///// VARIABLES /////
+
+// Get Elements //
 const main = document.getElementById("main");
 const bookPublisherInput = document.getElementById("publisher");
 const bookSeriesInput = document.getElementById("series");
@@ -31,15 +35,24 @@ const replaceBook = document.getElementById("replaceBtn");
 const bookPositionInput = document.getElementById("insertNumber");
 const bookReplaceInput = document.getElementById("replaceNumber");
 const bookFavoriteInput = document.getElementById("favorite");
+const filterHR = document.getElementById("hrAboveFilterMenu");
+const filterMenu = document.getElementById("filterMenu");
+const filterPropertySelect = document.getElementById("filterSelector");
+const filterValueTextInput = document.getElementById("filterValue");
 
     //stars
 let formStars = Array.from(document.getElementsByClassName("formStar"));
 let formStarImgs = new Array(5).fill('emptyStar.png');
 
-//// Big array that holds all the books ////
+// Big array that holds all the books //
 let everythingArray = [];
 
-//// Functions ////
+// Initialize Filter //
+if (localStorage.getItem("currentFiltering") === null) {
+    localStorage.setItem("currentFiltering", JSON.stringify(""));
+};
+
+///// FUNCTIONS /////
 function reset() {
     localStorage.clear();
     document.location.reload();
@@ -141,11 +154,38 @@ function save() {
     localStorage.setItem("everythingArray", JSON.stringify(everythingArray));
 };
 
+// Set up display when page loads
 function pageOnload() {
     if (localStorage.getItem('everythingArray') !== null) {
         everythingArray = JSON.parse(localStorage.getItem("everythingArray"));
+        let filtering = JSON.parse(localStorage.getItem('currentFiltering'));
+        let [filterBy, includes] = filtering;
         for (let i = 0; i < everythingArray.length; i++) {
-            drawBook(everythingArray[i]);
+            if (filtering === "") {
+                drawBook(everythingArray[i]);
+            } else {
+                //Test Logs
+                console.log("There is a filter on");
+                console.log(filtering);
+                console.log("Filter by:" + filterBy);
+                console.log("includes:" + includes);
+
+                //Actual Feature
+                switch (filterBy) { //Some filters are special and must perform differently
+                    case "read": //If a book's read value is true
+                        break;
+                    case "unread": //If a book's read value is false
+                        break;
+                    case "rating": //Rating involves input validation type shenanigans
+                        break;
+                    case "favorite": //If favorite value is true
+                        break;
+                    default: //These are just, "If book.property includes 'includes' variable"
+                        if (everythingArray[i][filterBy].includes(includes)) {
+                            drawBook(everythingArray[i]);
+                        };
+                };
+            };
         };
     };
     bookPositionInput.value = everythingArray.length;
@@ -448,7 +488,9 @@ function delBook() { //Remove a book from the array by slicing it and reassignin
     refreshPage();
 };
 
-    // Import / Export functions
+    // Toolbar button functions
+
+/* PRE-CYPHER Export Import in case it gets buggy later
 function exportCopy() {
     navigator.clipboard.writeText(JSON.stringify(everythingArray));
 };
@@ -462,6 +504,91 @@ function importData(){
         refreshPage();
     };
 };
+*/
+
+// Function to export the data, encoded using rot13
+function exportCopy() {
+    let encodedData = rot13Encode(JSON.stringify(everythingArray));
+    navigator.clipboard.writeText(encodedData);
+}
+  
+  // Function to import the data, decoded using rot13
+function importData() {
+    let encodedText = prompt("Import");
+    if (encodedText != null) {
+        let decodedData = rot13Decode(encodedText);
+        localStorage.setItem("everythingArray", decodedData);
+        everythingArray = JSON.parse(decodedData);
+        refreshPage();
+    }
+}
+
+function toggleFilterMenu() {
+    if (filterMenuOpen) {
+        filterHR.classList.add("hidden");
+        filterMenu.classList.add("hidden");
+        for (let i = 0; i < filterMenu.children.length; i++) {
+            filterMenu.children[i].style.display = "none"
+            filterMenu.children[1].children[i].style.display = "none";
+        };
+    } else {
+        filterHR.classList.remove("hidden");
+        filterMenu.classList.remove("hidden");
+        for (let i = 0; i < filterMenu.children.length; i++) {
+            filterMenu.children[i].style.display = "flex";
+            filterMenu.children[1].children[i].style.display = "flex";
+        };
+        filterMenu.children[1].style.justifyContent = "center";
+    };
+    filterMenuOpen = !filterMenuOpen
+};
+
+  // Function to encode a string using rot13
+function rot13Encode(str) {
+    let result = '';
+    for (let i = 0; i < str.length; i++) {
+      let c = str.charCodeAt(i);
+      if (c >= 65 && c <= 90) {  // Upper case letters
+        result += String.fromCharCode((c - 65 + 13) % 26 + 65);
+      } else if (c >= 97 && c <= 122) {  // Lower case letters
+        result += String.fromCharCode((c - 97 + 13) % 26 + 97);
+      } else {  // Symbols and spaces
+        result += str.charAt(i);
+      };
+    };
+    result = "#" + result //If old import data is used, it will not have #, so does not need to be decoded
+    return result;
+};
+  
+    // Function to decode a string using rot13
+function rot13Decode(str) {
+      if (str.slice(0, 1) === "#") {
+          str = str.slice(1);
+          let result = '';
+          for (let i = 0; i < str.length; i++) {
+              let c = str.charCodeAt(i);
+              if (c >= 65 && c <= 90) {  // Upper case letters
+                  result += String.fromCharCode((c - 65 + 13) % 26 + 65);
+              } else if (c >= 97 && c <= 122) {  // Lower case letters
+                  result += String.fromCharCode((c - 97 + 13) % 26 + 97);
+              } else {  // Symbols and spaces
+          result += str.charAt(i);
+          };
+      };
+      return result;
+    };
+    return str; //If there is not # at beginning, it does not have to be decoded
+};
+
+function setFilter() {
+    localStorage.setItem('currentFiltering', JSON.stringify([filterPropertySelect.value, filterValueTextInput.value]));
+    refreshPage();
+};
+
+function clearFilter() {
+    localStorage.setItem('currentFiltering', JSON.stringify(""));
+    refreshPage();
+};
 
 //// Set up Onclicks and onloads ////
 addBookBefore.onclick = appendBefore;
@@ -469,8 +596,29 @@ addBookAfter.onclick = appendAfter;
 replaceBook.onclick = replace;
 window.onload = pageOnload;
 
+//Tool button onclicks
+let buttonsArray = document.getElementById("toolButtons").children;
+buttonsArray[0].onclick = exportCopy;
+buttonsArray[1].onclick = importData;
+buttonsArray[2].onclick = save;
+buttonsArray[3].onclick = showResetModal;
+let filterMenuOpen = !((localStorage.getItem("currentFiltering") !== null) && JSON.parse(localStorage.getItem("currentFiltering")) !== "");
+toggleFilterMenu();
+buttonsArray[4].onclick = toggleFilterMenu;
+
+//Filter buttons
+filterMenu.children[1].children[0].onclick = setFilter; //Left filter button (set)
+filterMenu.children[1].children[1].onclick = clearFilter; //Right filter button (clear)
+
 //modal window buttons
 document.getElementsByClassName("leftModalBtn")[0].onclick = delBook;
 document.getElementsByClassName("leftModalBtn")[1].onclick = reset;
 document.getElementsByClassName("rightModalBtn")[0].onclick = closeDeleteModal;
 document.getElementsByClassName("rightModalBtn")[1].onclick = closeResetModal;
+
+
+
+
+
+
+
