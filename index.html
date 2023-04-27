@@ -84,15 +84,53 @@
                         <input type="number" id="replaceNumber" name="replaceNumber" min="1">
                     </div>
 
+                    <!-- FOR DIVIDERS
+                    <div class="centeringDiv">
+                        <button type="button" id="addDividerBtn">Add divider between</button>
+                        <input type="number" id="insertDividerAfterNumber" min="0">
+                        <--<p>and</p>--
+                        <input type="number" id="insertDividerBeforeNumber" min="1">
+                        <--<p>with title</p>--
+                        <input type="text" id="dividerTitleInput">
+                    </div>
+                    -->
+
                 </form> 
             </div>
             <hr>
             <div id="toolButtons">
-                <button title="Export to clipboard" onclick="exportCopy()"><img src="exportIcon.png"></button>
-                <button title="Import from clipboard" onclick="importData()"><img src="importIcon.png"></button>
-                <button title="Manual Save" onclick="save()"><img src="saveIcon.png"></button>
-                <button title="Reset" onclick="showResetModal()"><img src="resetIcon.png"></button>
-                <button title="Filter (doesn't do anything yet)" onclick=""><img src="filterIcon.png"></button>
+                <button title="Export to clipboard"><img src="exportIcon.png"></button>
+                <button title="Import from clipboard"><img src="importIcon.png"></button>
+                <button title="Manual Save"><img src="saveIcon.png"></button>
+                <button title="Reset"><img src="resetIcon.png"></button>
+                <button title="Filter to only show certain books"><img src="filterIcon.png"></button>
+            </div>
+            <hr id="hrAboveFilterMenu" class="hidden">
+            <div id="filterMenu">
+                <div id="topHalfFilterMenu">
+                    <p>Filter By:</p>
+                    <select id="filterSelector">
+                        <option value="publisher">Publisher</option>
+                        <option value="continuity">Continuity</option>
+                        <option value="series">Series</option>
+                        <option value="number">Number</option>
+                        <option value="name">Name</option>
+                        <option value="format">Format</option>
+                        <option value="read">Read</option>
+                        <option value="unread">Unread</option>
+                        <option value="rating">Rating</option>
+                        <option value="favorite">Favorite</option>
+                        <option value="notes">Notes</option>
+                    </select>
+                    <p>Value:</p>
+                    <input id="filterValue" type="text" title="Equal to or includes">
+                </div>
+                
+                <div id="bottomHalfFilterMenu">
+                    <button>Set Filter</button>
+                    <button>Clear Filter</button>
+                </div>
+                <p id="currentFilterDisplay"></p>
             </div>
         </div>
 
