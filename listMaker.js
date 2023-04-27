@@ -656,7 +656,7 @@ toggleFilterMenu();
 buttonsArray[4].onclick = toggleFilterMenu;
 
 //Filter buttons
-//filterPropertySelect.onchange = changeValueText;
+filterPropertySelect.onchange = changeValueText;
 filterMenu.children[1].children[0].onclick = setFilter; //Left filter button (set)
 filterMenu.children[1].children[1].onclick = clearFilter; //Right filter button (clear)
 
