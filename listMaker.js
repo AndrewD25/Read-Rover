@@ -6,11 +6,10 @@
 
     Refactor if possible?
     Continue to improve and refactor CSS (and media query?) 
-    Set max width and height for the box on the left proportionate to the vw and vh?
+    Set max width and height for the box on the left proportionate to the vw and vh? (I'm not sure what I meant by this)
     Write Documentation
     Maybe add more tools, and a label that says "tools"
-    ⭐ Make value show up or disappear in filter value box (like if read is clicked show no value needed)
-    Some way to keep track of crossovers and crossover reading order (connect somehow?)
+    Improve Sticker Menu : Add CSS for sizing , Change Input Method , Add a bunch more options
     Work on dividers in spare time
 
 */////////////////////////////
@@ -35,10 +34,14 @@ const replaceBook = document.getElementById("replaceBtn");
 const bookPositionInput = document.getElementById("insertNumber");
 const bookReplaceInput = document.getElementById("replaceNumber");
 const bookFavoriteInput = document.getElementById("favorite");
-const filterHR = document.getElementById("hrAboveFilterMenu");
+const menuHR = document.getElementById("hrAboveBottomMenu");
 const filterMenu = document.getElementById("filterMenu");
 const filterPropertySelect = document.getElementById("filterSelector");
 const filterValueTextInput = document.getElementById("filterValue");
+const stickerMenu = document.getElementById("stickerMenu");
+const addSticker = document.getElementById("addStickerBtn");
+const stickerSelectDiv = document.getElementById("imgGrid");
+const stickerPosition = document.getElementById("stickerNumber");
 
     //stars
 let formStars = Array.from(document.getElementsByClassName("formStar"));
@@ -111,6 +114,15 @@ function createBook() {
     return book;
 };
 
+function refreshPage() {
+    save();
+    document.location.reload();
+};
+
+function save() {
+    localStorage.setItem("everythingArray", JSON.stringify(everythingArray));
+};
+
 function appendBefore() { //These append functions will be the main way to add new books to the list. Update over time to add new features
     book = createBook();
     //// Append the object to the main array ////
@@ -134,8 +146,8 @@ function appendAfter() {
 function replace() {
     book = createBook();
     book.position = bookReplaceInput.value;
-    if ((book.position != Number(book.position)) || (book.position > everythingArray.length)) {
-        alert("Not a valid number for replacement!");
+    if (book.position < 1 || (book.position > everythingArray.length)) {
+        alert("Not a valid position for replacement!");
         return;
     };
     let firstHalf = everythingArray.slice(0, book.position - 1);
@@ -144,15 +156,6 @@ function replace() {
 
     refreshPage();
 }
-
-function refreshPage() {
-    save();
-    document.location.reload();
-};
-
-function save() {
-    localStorage.setItem("everythingArray", JSON.stringify(everythingArray));
-};
 
 // Set up display when page loads
 function pageOnload() {
@@ -253,7 +256,12 @@ function drawBook(book) {
     } else {
         displayString = "???"
     }
-    summary.innerHTML = `${Number(everythingArray.indexOf(book)) + 1}.<span class="alignRight">${displayString}</span>`;
+
+    if (book.hasOwnProperty('sticker')) {
+        summary.innerHTML = `${Number(everythingArray.indexOf(book)) + 1}.<span class="alignRight">${displayString}&nbsp;&nbsp;&nbsp;<img class="sticker" src="${book.sticker}"></span>`;
+    } else {
+        summary.innerHTML = `${Number(everythingArray.indexOf(book)) + 1}.<span class="alignRight">${displayString}</span>`;
+    }
 
     main.appendChild(newDiv);
     newDiv.appendChild(details);
@@ -476,7 +484,7 @@ function moveUp(event) {
         everythingArray = [...firstHalf, book, previous, ...secondHalf];
     };
     refreshPage();
-}
+};
 
 function moveDown(event) {
     let book = everythingArray[Number(event.target.parentElement.parentElement.parentElement.previousElementSibling.textContent[0]) - 1];
@@ -488,11 +496,11 @@ function moveDown(event) {
         everythingArray = [...firstHalf, next, book, ...secondHalf];
     };
     refreshPage();
-}
+};
 
     //Functions for modal windows
-let modalWindowDel = document.getElementById("modalWindow");
-let modalWindowReset = document.getElementById("modalWindow2");
+const modalWindowDel = document.getElementById("modalWindow");
+const modalWindowReset = document.getElementById("modalWindow2");
 function showDeleteModal() {
     modalWindowDel.classList.remove('hidden');
     overlay.classList.remove("hidden");
@@ -527,24 +535,6 @@ function delBook() { //Remove a book from the array by slicing it and reassignin
     refreshPage();
 };
 
-    // Toolbar button functions
-
-/* PRE-CYPHER Export Import in case it gets buggy later
-function exportCopy() {
-    navigator.clipboard.writeText(JSON.stringify(everythingArray));
-};
-
-function importData(){ 
-    let importText = prompt("Import");
-    if (importText != null) {
-        console.log();
-        localStorage.setItem("everythingArray", importText);
-        everythingArray = JSON.parse(importText);
-        refreshPage();
-    };
-};
-*/
-
 // Function to export the data, encoded using rot13
 function exportCopy() {
     let encodedData = rot13Encode(JSON.stringify(everythingArray));
@@ -560,18 +550,21 @@ function importData() {
         everythingArray = JSON.parse(decodedData);
         refreshPage();
     }
-}
+};
+
+//Tool Menu Functions
+let filterMenuOpen = !((localStorage.getItem("currentFiltering") !== null) && JSON.parse(localStorage.getItem("currentFiltering")) !== "");
 
 function toggleFilterMenu() {
     if (filterMenuOpen) {
-        filterHR.classList.add("hidden");
+        menuHR.classList.add("hidden");
         filterMenu.classList.add("hidden");
         for (let i = 0; i < 2; i++) {
             filterMenu.children[i].style.display = "none"
             filterMenu.children[1].children[i].style.display = "none";
         };
     } else {
-        filterHR.classList.remove("hidden");
+        menuHR.classList.remove("hidden");
         filterMenu.classList.remove("hidden");
         for (let i = 0; i < 2; i++) {
             filterMenu.children[i].style.display = "flex";
@@ -639,6 +632,42 @@ function changeValueText() {
     };
 };
 
+const stickerModal = document.getElementById("stickerModal");
+function openStickerModal() {
+    stickerModal.classList.remove("hidden");
+    overlay.classList.remove("hidden");
+};
+
+function closeStickerModal() {
+    stickerModal.classList.add("hidden");
+    overlay.classList.add("hidden");
+};
+
+    //Sticker functions
+let stickerToAdd; //A variable that is set by event listeners later
+function selectSticker(event) {
+    for (let i = 0; i < stickerSelectDiv.children.length; i++) {
+        stickerSelectDiv.children[i].classList.remove("selected");
+    };
+    event.target.classList.add("selected");
+    selectedStickerText.textContent = event.target.getAttribute("title");
+    stickerToAdd = event.target.getAttribute("src");
+}
+
+function setSticker() {  
+    let selectedSticker = stickerToAdd;
+    let wantedBookPosition = stickerPosition.value
+    if (selectedSticker == undefined) {
+        alert("You didn't select a sticker! 💀")
+        return;
+    } else if ((wantedBookPosition < 1) || (wantedBookPosition > everythingArray.length)) {
+        alert("If a book doesn't exist, can you even put a sticker on it? 🤔");
+        return;
+    };
+    everythingArray[wantedBookPosition - 1].sticker = selectedSticker;
+    refreshPage();
+};
+
 //// Set up Onclicks and onloads ////
 addBookBefore.onclick = appendBefore;
 addBookAfter.onclick = appendAfter;
@@ -651,24 +680,27 @@ buttonsArray[0].onclick = exportCopy;
 buttonsArray[1].onclick = importData;
 buttonsArray[2].onclick = save;
 buttonsArray[3].onclick = showResetModal;
-let filterMenuOpen = !((localStorage.getItem("currentFiltering") !== null) && JSON.parse(localStorage.getItem("currentFiltering")) !== "");
 toggleFilterMenu();
 buttonsArray[4].onclick = toggleFilterMenu;
+buttonsArray[6].onclick = openStickerModal; //Open sticker modal window
 
 //Filter buttons
 filterPropertySelect.onchange = changeValueText;
 filterMenu.children[1].children[0].onclick = setFilter; //Left filter button (set)
 filterMenu.children[1].children[1].onclick = clearFilter; //Right filter button (clear)
 
-//modal window buttons
+//Buttons inside modal windows
 document.getElementsByClassName("leftModalBtn")[0].onclick = delBook;
-document.getElementsByClassName("leftModalBtn")[1].onclick = reset;
 document.getElementsByClassName("rightModalBtn")[0].onclick = closeDeleteModal;
+document.getElementsByClassName("leftModalBtn")[1].onclick = reset;
 document.getElementsByClassName("rightModalBtn")[1].onclick = closeResetModal;
+document.getElementsByClassName("leftModalBtn")[2].onclick = setSticker;
+document.getElementsByClassName("rightModalBtn")[2].onclick = closeStickerModal;
 
-
-
-
+  //Add event listeners to each img in the sticker modal
+for (let i = 0; i < stickerSelectDiv.children.length; i++) {
+    stickerSelectDiv.children[i].addEventListener("click", selectSticker)
+};
 
 
 

@@ -99,13 +99,15 @@
             </div>
             <hr>
             <div id="toolButtons">
-                <button title="Export to clipboard"><img src="exportIcon.png"></button>
-                <button title="Import from clipboard"><img src="importIcon.png"></button>
+                <button title="Export to Clipboard"><img src="exportIcon.png"></button>
+                <button title="Import Data"><img src="importIcon.png"></button>
                 <button title="Manual Save"><img src="saveIcon.png"></button>
                 <button title="Reset"><img src="resetIcon.png"></button>
-                <button title="Filter to only show certain books"><img src="filterIcon.png"></button>
+                <button title="Filter"><img src="filterIcon.png"></button>
+                <button title="Dividers"><img src="dividerIcon.png"></button>
+                <button title="Stickers"><img src="stickerIcon.png"></button>
             </div>
-            <hr id="hrAboveFilterMenu" class="hidden">
+            <hr id="hrAboveBottomMenu" class="hidden">
             <div id="filterMenu">
                 <div id="topHalfFilterMenu">
                     <p>Filter By:</p>
@@ -125,7 +127,7 @@
                     <p>Value:</p>
                     <input id="filterValue" type="text" title="Equal to or includes">
                 </div>
-                
+
                 <div id="bottomHalfFilterMenu">
                     <button>Set Filter</button>
                     <button>Clear Filter</button>
@@ -156,6 +158,27 @@
             <button class="leftModalBtn">Do it!</button>
             <p style="display:inline">&nbsp;&nbsp;</p>
             <button class="rightModalBtn">Cancel</button>
+        </div>
+        <div class="modal hidden" id="stickerModal">
+            <h1>Add a Sticker to a Book</h1>
+
+            <div id="imgGrid">
+                <img src="crossoverIconV2.png" title="Crossover Marker">
+                <img src="thumbsUp.jpg" title="Booster Approves">
+                <img src="thumbsDown.jpg" title="Disappointed Darkseid">
+                <img src="mindBlown.jpg" title="No %#&@$%! Way">
+                <img src="happy.png" title="The Bat-Smile">
+                <img src="sad.png" title="Sad Peter Parker">
+                <img src="angry.png" title="Gamma Rage">
+                <img src="dying.png" title="💀">
+                <img src="Heyayayayay.jpg" title="Heyayayayay!">
+            </div>
+            
+            <p>Currently Selected:</p> <em><p id="selectedStickerText">None</p></em>
+            <br>
+            <button id="addStickerBtn" class="leftModalBtn">Add to #</button>
+            <input id="stickerNumber" type="number" min="1">
+            <button id="closeStickerMenu" class="rightModalBtn">Close</button>
         </div>
         <div class="overlay hidden" id="overlay"></div>
 
