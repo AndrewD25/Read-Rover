@@ -104,7 +104,7 @@ body {
 
 #bottomHalfFilterMenu > button {
     display: none;
-    font-size: calc(5px + 0.7vw);
+    font-size: calc(5px + 0.6vw);
     margin-left: 0.3vw;
     margin-right: 0.3vw;
 }
@@ -113,6 +113,28 @@ body {
     text-align: center;
     font-size: calc(6px + 0.5vw);
     color:rgb(53, 53, 53);
+}
+
+#dividerMenu {
+    display: none;
+    text-align: center;
+}
+
+#dividerMenu p, input {
+    display: inline;
+    font-size: calc(6px + 0.9vw);
+    margin-bottom: 0.5vw;
+}
+
+#dividerMenu button {
+    font-size: calc(6px + 0.6vw);
+}
+
+#dividerMenu input[type=number] {
+    width: 5vw;
+    text-align: left;
+    margin-left: 1vw;
+    margin-right: 1vw;
 }
 
 /*Main sections*/
@@ -251,16 +273,17 @@ input[type=checkbox] {
 }
 
 .centeringDiv > button {
+    height: 2vw;
     font-size: calc(5px + 0.9vw);
     white-space: nowrap;
     text-overflow: clip;
-}
-
-.centeringDiv > input[type=number] {
+  }
+  
+  .centeringDiv > input[type=number] {
     width: 4vw;
-    height: 1.5vw;
+    height: calc(2vw - 6px);
     font-size: calc(4px + 0.9vw);
-}
+  }
 
 #addDividerBtn {
     height: 2vw;
@@ -368,7 +391,30 @@ summary {
 .hidden {
     display: none;
 }
-  
+
+.divider {
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 4vw;
+    padding-left: 3.3vw;
+    padding-right: 0.5vw;
+    border-top: 1px solid black;
+}
+
+.divider p {
+    font-size: calc(9px + 0.9vw);
+}
+
+.divider h2 {
+    margin: 0;
+}
+
+.diviDel {
+    font-size: calc(5px + 0.75vw);
+}
+
 /* CLASSES TO MAKE MODAL WORK */
 .modal {
     position: fixed;

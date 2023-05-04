@@ -38,6 +38,8 @@ const menuHR = document.getElementById("hrAboveBottomMenu");
 const filterMenu = document.getElementById("filterMenu");
 const filterPropertySelect = document.getElementById("filterSelector");
 const filterValueTextInput = document.getElementById("filterValue");
+const dividerMenu = document.getElementById("dividerMenu");
+const addDividerButton = document.getElementById("addDividerBtn");
 const stickerMenu = document.getElementById("stickerMenu");
 const addSticker = document.getElementById("addStickerBtn");
 const stickerSelectDiv = document.getElementById("imgGrid");
@@ -114,6 +116,17 @@ function createBook() {
     return book;
 };
 
+function createDivider() {
+    let divider = {
+        after: document.getElementById("insertDividerAfterNumber").value,
+        before: document.getElementById("insertDividerBeforeNumber").value,
+        title: document.getElementById("dividerTitleInput").value,
+        color: document.getElementById("dividerColorInput").value,
+    }; 
+
+    return divider;
+}
+
 function refreshPage() {
     save();
     document.location.reload();
@@ -155,18 +168,37 @@ function replace() {
     everythingArray = [...firstHalf, book, ...secondHalf];
 
     refreshPage();
-}
+};
+
+function appendDivider() {
+    let info = createDivider();
+    if (info.before == 1) {
+        everythingArray = [info, ...everythingArray];
+    } else if (everythingArray.length >= info.after) {
+        let firstHalf = everythingArray.slice(0, info.after);
+        let secondHalf = everythingArray.slice(info.after);
+        everythingArray = [...firstHalf, info, ...secondHalf];
+    } else {
+        alert("You can't put a divider there! 😭")
+        return;
+    };
+    refreshPage();
+};
 
 // Set up display when page loads
 function pageOnload() {
     if (localStorage.getItem('everythingArray') !== null) {
+        //Set up filtering
         everythingArray = JSON.parse(localStorage.getItem("everythingArray"));
         let filtering = JSON.parse(localStorage.getItem('currentFiltering'));
         let [filterBy, includes] = filtering;
+        //Choose what elements to draw
         for (let i = 0; i < everythingArray.length; i++) {
-            if (filtering === "") {
+            if (everythingArray[i].hasOwnProperty("before")) { //Means the object stores a Divider
+                drawDivider(everythingArray[i]);
+            } else if (filtering === "") { //No filters
                 drawBook(everythingArray[i]);
-            } else {
+            } else { //Filtering
                 includes = includes.toLowerCase();
 
                 //Set text
@@ -231,6 +263,42 @@ function pageOnload() {
         };
     };
     bookPositionInput.value = everythingArray.length;
+};
+
+function getContrast(r, g, b){
+    // calculate the contrast ratio
+    var yiq = ((r*299)+(g*587)+(b*114))/1000;
+    return yiq;
+};
+
+function hexToRgb(hex) {
+    // convert hex color value to RGB values
+    var r = parseInt(hex.substring(1,3), 16);
+    var g = parseInt(hex.substring(3,5), 16);
+    var b = parseInt(hex.substring(5,7), 16);
+    return {r: r, g: g, b: b};
+};
+
+function drawDivider(divi) {
+    let newDivider = document.createElement("div");
+    newDivider.classList.add("divider");
+    newDivider.style.backgroundColor = divi.color;
+    let rgb = hexToRgb(divi.color);
+    newDivider.style.color = (getContrast(rgb.r, rgb.g, rgb.b) >= 128) ? "black" : "white";
+    let diviNum = document.createElement("p");
+    diviNum.textContent = everythingArray.indexOf(divi) + 1 +".";
+    let diviTitle = document.createElement("h2");
+    diviTitle.textContent = divi.title
+    let diviDel = document.createElement("button");
+    diviDel.addEventListener("click", setUpDiviDel);
+    diviDel.textContent = "Delete";
+    diviDel.classList.add("diviDel");
+    
+    newDivider.appendChild(diviNum);
+    newDivider.appendChild(diviTitle);
+    newDivider.appendChild(diviDel);
+    main.appendChild(newDivider);
+
 };
 
 function drawBook(book) {
@@ -424,7 +492,7 @@ function drawBook(book) {
     downBtn.classList.add("posButtons");
     downBtn.setAttribute("id", "down")
     deleteBtn.classList.add("posButtons");
-    deleteBtn.setAttribute("id", "delete")
+    deleteBtn.setAttribute("id", "delete");
 
         //click event listeners
     upBtn.addEventListener("click", moveUp);
@@ -520,7 +588,13 @@ function closeResetModal() {
 
 let bookToDelete;
 function setUpDel(event) {
-    let index = Number(event.target.parentElement.parentElement.previousElementSibling.textContent[0]) - 1; //
+    let index = Number(event.target.parentElement.parentElement.previousElementSibling.textContent[0]) - 1;  //Gets number from summary
+    bookToDelete = everythingArray[index];
+    showDeleteModal();
+};
+
+function setUpDiviDel(event) {
+    let index = Number(event.target.previousSibling.previousSibling.textContent.slice(0, 1)) - 1; //Gets number from left number
     bookToDelete = everythingArray[index];
     showDeleteModal();
 };
@@ -528,8 +602,8 @@ function setUpDel(event) {
 function delBook() { //Remove a book from the array by slicing it and reassigning a shallow copy of the slices
     let book = bookToDelete;
     if (book != undefined) {
-        let firstHalf = everythingArray.slice(0, book.position);
-        let secondHalf = everythingArray.slice(book.position + 1);
+        let firstHalf = everythingArray.slice(0, everythingArray.indexOf(book));
+        let secondHalf = everythingArray.slice(everythingArray.indexOf(book) + 1);
         everythingArray = [...firstHalf, ...secondHalf];
     };
     refreshPage();
@@ -554,6 +628,7 @@ function importData() {
 
 //Tool Menu Functions
 let filterMenuOpen = !((localStorage.getItem("currentFiltering") !== null) && JSON.parse(localStorage.getItem("currentFiltering")) !== "");
+let dividerMenuOpen = false; //Filter menu is sometimes open on refresh, but divider is always closed
 
 function toggleFilterMenu() {
     if (filterMenuOpen) {
@@ -564,6 +639,7 @@ function toggleFilterMenu() {
             filterMenu.children[1].children[i].style.display = "none";
         };
     } else {
+        if (dividerMenuOpen) toggleDividerMenu();
         menuHR.classList.remove("hidden");
         filterMenu.classList.remove("hidden");
         for (let i = 0; i < 2; i++) {
@@ -573,6 +649,18 @@ function toggleFilterMenu() {
         filterMenu.children[1].style.justifyContent = "center";
     };
     filterMenuOpen = !filterMenuOpen
+};
+
+function toggleDividerMenu() {
+    if (dividerMenuOpen) {
+        menuHR.classList.add("hidden");
+        dividerMenu.style.display = "none";
+    } else {
+        if (filterMenuOpen) toggleFilterMenu();
+        menuHR.classList.remove("hidden");
+        dividerMenu.style.display = "block";
+    };
+    dividerMenuOpen = !dividerMenuOpen
 };
 
   // Function to encode a string using rot13
@@ -663,6 +751,9 @@ function setSticker() {
     } else if ((wantedBookPosition < 1) || (wantedBookPosition > everythingArray.length)) {
         alert("If a book doesn't exist, can you even put a sticker on it? 🤔");
         return;
+    } else if (everythingArray[wantedBookPosition - 1].hasOwnProperty("before")) { 
+        alert("I don't know how to put a sticker on that yet 😢"); //Check for divider
+        return;
     };
     everythingArray[wantedBookPosition - 1].sticker = selectedSticker;
     refreshPage();
@@ -672,9 +763,10 @@ function setSticker() {
 addBookBefore.onclick = appendBefore;
 addBookAfter.onclick = appendAfter;
 replaceBook.onclick = replace;
+addDividerButton.onclick = appendDivider;
 window.onload = pageOnload;
 
-//Tool button onclicks
+// Tool button onclicks //
 let buttonsArray = document.getElementById("toolButtons").children;
 buttonsArray[0].onclick = exportCopy;
 buttonsArray[1].onclick = importData;
@@ -682,14 +774,25 @@ buttonsArray[2].onclick = save;
 buttonsArray[3].onclick = showResetModal;
 toggleFilterMenu();
 buttonsArray[4].onclick = toggleFilterMenu;
+buttonsArray[5].onclick = toggleDividerMenu;
 buttonsArray[6].onclick = openStickerModal; //Open sticker modal window
 
-//Filter buttons
+//Add event listeners to the divider position inputs //
+const insDiviAftInput = document.getElementById("insertDividerAfterNumber")
+const insDiviBefInput = document.getElementById("insertDividerBeforeNumber")
+const increaseDiviVal = () => {insDiviBefInput.value = Number(insDiviAftInput.value) + 1;}
+const decreaseDiviVal = () => {insDiviAftInput.value = insDiviBefInput.value - 1;}
+insDiviAftInput.addEventListener("input", increaseDiviVal);
+insDiviAftInput.addEventListener("keyup", increaseDiviVal);
+insDiviBefInput.addEventListener("input", decreaseDiviVal);
+insDiviBefInput.addEventListener("keyup", decreaseDiviVal);
+
+// Filter buttons //
 filterPropertySelect.onchange = changeValueText;
 filterMenu.children[1].children[0].onclick = setFilter; //Left filter button (set)
 filterMenu.children[1].children[1].onclick = clearFilter; //Right filter button (clear)
 
-//Buttons inside modal windows
+// Buttons inside modal windows //
 document.getElementsByClassName("leftModalBtn")[0].onclick = delBook;
 document.getElementsByClassName("rightModalBtn")[0].onclick = closeDeleteModal;
 document.getElementsByClassName("leftModalBtn")[1].onclick = reset;
@@ -697,7 +800,7 @@ document.getElementsByClassName("rightModalBtn")[1].onclick = closeResetModal;
 document.getElementsByClassName("leftModalBtn")[2].onclick = setSticker;
 document.getElementsByClassName("rightModalBtn")[2].onclick = closeStickerModal;
 
-  //Add event listeners to each img in the sticker modal
+//Add event listeners to each img in the sticker modal
 for (let i = 0; i < stickerSelectDiv.children.length; i++) {
     stickerSelectDiv.children[i].addEventListener("click", selectSticker)
 };
