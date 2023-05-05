@@ -8,9 +8,7 @@
     Continue to improve and refactor CSS (and media query?) 
     Set max width and height for the box on the left proportionate to the vw and vh? (I'm not sure what I meant by this)
     Write Documentation
-    Maybe add more tools, and a label that says "tools"
-    Improve Sticker Menu : Add CSS for sizing , Change Input Method , Add a bunch more options
-    Work on dividers in spare time
+    Check program plan for more ideas
 
 */////////////////////////////
 
@@ -63,7 +61,7 @@ function reset() {
     document.location.reload();
 }
 
-formStars.forEach((item) => {
+formStars.forEach((item) => { //Set up ability to click on and change stars
     item.addEventListener('click', (event) => {
         let x = event.pageX - item.offsetLeft;
         if (x < item.width / 2) { //mouse on left side
@@ -117,9 +115,9 @@ function createBook() {
 };
 
 function createDivider() {
-    let divider = {
-        after: document.getElementById("insertDividerAfterNumber").value,
-        before: document.getElementById("insertDividerBeforeNumber").value,
+    let divider = { //Store values from divider menu
+        after: document.getElementById("insertDividerAfterNumber").value, //The first number, divi will be entered after
+        before: document.getElementById("insertDividerBeforeNumber").value, //The second number, divi will be entered before
         title: document.getElementById("dividerTitleInput").value,
         color: document.getElementById("dividerColorInput").value,
     }; 
@@ -132,7 +130,7 @@ function refreshPage() {
     document.location.reload();
 };
 
-function save() {
+function save() { //Saves array of book and divider objects into the browser's local storage to be retrieved upon refresh
     localStorage.setItem("everythingArray", JSON.stringify(everythingArray));
 };
 
@@ -158,8 +156,9 @@ function appendAfter() {
 
 function replace() {
     book = createBook();
-    book.position = bookReplaceInput.value;
+    book.position = bookReplaceInput.value; 
     if (book.position < 1 || (book.position > everythingArray.length)) {
+        //A book does not exist at that position
         alert("Not a valid position for replacement!");
         return;
     };
@@ -172,12 +171,13 @@ function replace() {
 
 function appendDivider() {
     let info = createDivider();
-    if (info.before == 1) {
-        everythingArray = [info, ...everythingArray];
-    } else if (everythingArray.length >= info.after) {
+    if (everythingArray.length >= info.after) {
         let firstHalf = everythingArray.slice(0, info.after);
         let secondHalf = everythingArray.slice(info.after);
         everythingArray = [...firstHalf, info, ...secondHalf];
+    //Notice that the after property is always used to find the position, never before.
+     //The before property is just an extra redundancy left over from initial development
+      //left in because it doesn't hurt anything and sometimes used to check if an object is a divider
     } else {
         alert("You can't put a divider there! 😭")
         return;
@@ -228,23 +228,24 @@ function pageOnload() {
                             for (let i = 0; i < checkOrder.length; i++) {
                                 if (includes.includes(checkOrder[i])) {
                                     ratingTotal += i;
-                                };
+                                }; //Find the whole number of the rating
                             };
                         };
                         if (includes.includes(".5")|| includes.includes("1/2") || includes.includes("half") || includes.includes("1/2")) {
-                            ratingTotal += 0.5;
+                            ratingTotal += 0.5; //If there is a half, adds it to the rating
                         };
                         
-                        let starFilterArray = [];
+                        let starFilterArray = []; //Creates an array of images based on filter input
                         for (let i = 0; i < Math.floor(ratingTotal); i++) {
-                            starFilterArray.push("fullStar.png");
+                            starFilterArray.push("fullStar.png"); //Adds full star for each whole number
                         };
-                        if (ratingTotal !== Math.floor(ratingTotal)) {
-                            starFilterArray.push("halfStar.png");
+                        if (ratingTotal !== Math.floor(ratingTotal)) { //Adds half star if not whole number. 
+                            starFilterArray.push("halfStar.png"); //This check works since the only decimal possible in the variable is 0.5, or half
                         };
                         for (let i = 0; i < 5 - starFilterArray.length; i++) {
-                            starFilterArray.push("emptyStar.png");
+                            starFilterArray.push("emptyStar.png"); //Adds empty stars until the amount of stars in the array is 5
                         }
+                        //compare filtering array to the array images stored in the book object
                         if (JSON.stringify(everythingArray[i].rating) === JSON.stringify(starFilterArray)) {
                             drawBook(everythingArray[i]);
                         };
@@ -262,6 +263,7 @@ function pageOnload() {
             };
         };
     };
+    //Book add form position input defaults to the highest position numbered book
     bookPositionInput.value = everythingArray.length;
 };
 
@@ -284,6 +286,7 @@ function drawDivider(divi) {
     newDivider.classList.add("divider");
     newDivider.style.backgroundColor = divi.color;
     let rgb = hexToRgb(divi.color);
+    //Gets Rgb of the background color and uses it to set better contrasting text color
     newDivider.style.color = (getContrast(rgb.r, rgb.g, rgb.b) >= 128) ? "black" : "white";
     let diviNum = document.createElement("p");
     diviNum.textContent = everythingArray.indexOf(divi) + 1 +".";
@@ -313,19 +316,20 @@ function drawBook(book) {
     let details = document.createElement("details");
     let summary = document.createElement("summary");
     let displayString;
-    if (book.numberType != "No Number") {
+    if (book.numberType != "No Number") { //Tries first to display something like "Batman Volume 1"
         displayString = `${book.series} ${book.numberType} ${book.number}`;
-    } else if (book.name !== "" && book.series !== "") {
+    } else if (book.name !== "" && book.series !== "") { //Then tries something like "Batman The Court of Owls" if there is no number but is a name
         displayString = `${book.series}: ${book.name}`;
-    } else if (book.series !== "") {
+    } else if (book.series !== "") { //Then something like "Flashpoint" if there is no name or number
         displayString = book.series
-    } else if (book.name !== "") {
+    } else if (book.name !== "") { //Then something like "Lord of the Flies" if the book has a name but no series
         displayString = book.name
-    } else {
+    } else { //If no data can be found, defaults to ?s
         displayString = "???"
     }
 
     if (book.hasOwnProperty('sticker')) {
+        //Sticker img tag is added to summary innerHTML if there is one
         summary.innerHTML = `${Number(everythingArray.indexOf(book)) + 1}.<span class="alignRight">${displayString}&nbsp;&nbsp;&nbsp;<img class="sticker" src="${book.sticker}"></span>`;
     } else {
         summary.innerHTML = `${Number(everythingArray.indexOf(book)) + 1}.<span class="alignRight">${displayString}</span>`;
@@ -344,7 +348,7 @@ function drawBook(book) {
     leftSpan.classList.add("leftSide");
     let bookImage = document.createElement("img");
     bookImage.src = book.image;
-    bookImage.onerror = function(){bookImage.src='altImg.jpg';};
+    bookImage.onerror = function(){bookImage.src='altImg.jpg';}; //Replaces img with an alt-img if linked img would cause error
     leftSpan.appendChild(bookImage);
     insideDiv.appendChild(leftSpan);
 
@@ -425,14 +429,14 @@ function drawBook(book) {
     ratingLabel.textContent = "Rating:";
     ratingBox.appendChild(ratingLabel);
     book.stars = [];
-    for (let i = 0; i < book.rating.length; i++) {
+    for (let i = 0; i < book.rating.length; i++) { //Adds stars and sets up styling selectors
         let aStar = document.createElement("img");
         aStar.src = book.rating[i];
         aStar.classList.add("smallStar");
         ratingBox.appendChild(aStar);
         book.stars.push(aStar);
     };
-    book.stars.forEach((item) => {
+    book.stars.forEach((item) => { //Set up ability for stars to be clicked on and have the rating change saved
         item.addEventListener('click', (event) => {
             let x = event.pageX - item.offsetLeft;
             if (x < item.width / 2) { //mouse on left side
@@ -479,12 +483,12 @@ function drawBook(book) {
     let downBtn = document.createElement("button");
     let deleteBtn = document.createElement("button");
 
-        //text
+        //u,d,d buttons text
     upBtn.textContent = "Move Up";
     downBtn.textContent = "Move Down";
     deleteBtn.textContent = "Delete Book";
 
-        //classes and ids
+       //u,d,d button classes and ids
     buttonsContainer.classList.add("posContainer");
     upDownContainer.setAttribute("id", "upDownContainer")
     upBtn.classList.add("posButtons");
@@ -494,7 +498,7 @@ function drawBook(book) {
     deleteBtn.classList.add("posButtons");
     deleteBtn.setAttribute("id", "delete");
 
-        //click event listeners
+        //u,d,d button click event listeners
     upBtn.addEventListener("click", moveUp);
     downBtn.addEventListener("click", moveDown);
     deleteBtn.addEventListener("click", setUpDel);
@@ -505,7 +509,7 @@ function drawBook(book) {
     buttonsContainer.appendChild(deleteBtn);
     insideDiv.appendChild(buttonsContainer);
 
-    //Add the containers to the document
+    //Add the book's container to the document
     details.appendChild(insideDiv);
 };
 
@@ -544,7 +548,7 @@ function saveChangesNotes(event) {
 
 function moveUp(event) {
     let book = everythingArray[Number(event.target.parentElement.parentElement.parentElement.previousElementSibling.textContent[0]) - 1];
-    console.log(book.position)
+    //Uses slicing similarly to how books are added to basically decrease a book's array index by 1
     if (book.position > 0) {
         let firstHalf = everythingArray.slice(0, book.position - 1);
         let previous = everythingArray[book.position - 1]
@@ -556,7 +560,7 @@ function moveUp(event) {
 
 function moveDown(event) {
     let book = everythingArray[Number(event.target.parentElement.parentElement.parentElement.previousElementSibling.textContent[0]) - 1];
-    console.log(book.position)
+    //Uses slicing similarly to how books are added to basically increase a book's array index by 1
     if (book.position < everythingArray.length - 1) {
         let firstHalf = everythingArray.slice(0, book.position);
         let next = everythingArray[book.position + 1]
@@ -566,7 +570,7 @@ function moveDown(event) {
     refreshPage();
 };
 
-    //Functions for modal windows
+//Modal Window Functions
 const modalWindowDel = document.getElementById("modalWindow");
 const modalWindowReset = document.getElementById("modalWindow2");
 function showDeleteModal() {
@@ -585,6 +589,17 @@ function closeResetModal() {
     modalWindowReset.classList.add("hidden");
     overlay.classList.add("hidden");
 }; 
+
+const stickerModal = document.getElementById("stickerModal");
+function openStickerModal() {
+    stickerModal.classList.remove("hidden");
+    overlay.classList.remove("hidden");
+};
+
+function closeStickerModal() {
+    stickerModal.classList.add("hidden");
+    overlay.classList.add("hidden");
+};
 
 let bookToDelete;
 function setUpDel(event) {
@@ -615,10 +630,10 @@ function exportCopy() {
     navigator.clipboard.writeText(encodedData);
 }
   
-  // Function to import the data, decoded using rot13
+// Function to import the data, decoded using rot13
 function importData() {
     let encodedText = prompt("Import");
-    if (encodedText != null) {
+    if (encodedText != null) { //Prompt returns null if user presses cancel
         let decodedData = rot13Decode(encodedText);
         localStorage.setItem("everythingArray", decodedData);
         everythingArray = JSON.parse(decodedData);
@@ -631,15 +646,15 @@ let filterMenuOpen = !((localStorage.getItem("currentFiltering") !== null) && JS
 let dividerMenuOpen = false; //Filter menu is sometimes open on refresh, but divider is always closed
 
 function toggleFilterMenu() {
-    if (filterMenuOpen) {
+    if (filterMenuOpen) { //Close menu
         menuHR.classList.add("hidden");
         filterMenu.classList.add("hidden");
         for (let i = 0; i < 2; i++) {
             filterMenu.children[i].style.display = "none"
             filterMenu.children[1].children[i].style.display = "none";
         };
-    } else {
-        if (dividerMenuOpen) toggleDividerMenu();
+    } else { //Open menu
+        if (dividerMenuOpen) toggleDividerMenu(); //Closes divi menu if it is open
         menuHR.classList.remove("hidden");
         filterMenu.classList.remove("hidden");
         for (let i = 0; i < 2; i++) {
@@ -652,18 +667,18 @@ function toggleFilterMenu() {
 };
 
 function toggleDividerMenu() {
-    if (dividerMenuOpen) {
+    if (dividerMenuOpen) { //Close menu
         menuHR.classList.add("hidden");
         dividerMenu.style.display = "none";
-    } else {
-        if (filterMenuOpen) toggleFilterMenu();
+    } else { //Open menu
+        if (filterMenuOpen) toggleFilterMenu(); //Closes filter menu if it is open
         menuHR.classList.remove("hidden");
         dividerMenu.style.display = "block";
     };
     dividerMenuOpen = !dividerMenuOpen
 };
 
-  // Function to encode a string using rot13
+// Function to encode a string using rot13
 function rot13Encode(str) {
     let result = '';
     for (let i = 0; i < str.length; i++) {
@@ -680,7 +695,7 @@ function rot13Encode(str) {
     return result;
 };
   
-    // Function to decode a string using rot13
+// Function to decode a string using rot13
 function rot13Decode(str) {
       if (str.slice(0, 1) === "#") {
           str = str.slice(1);
@@ -701,11 +716,13 @@ function rot13Decode(str) {
 };
 
 function setFilter() {
+    //Filters are saved in local storage to stay on between refreshes...
     localStorage.setItem('currentFiltering', JSON.stringify([filterPropertySelect.value, filterValueTextInput.value]));
     refreshPage();
 };
 
 function clearFilter() {
+    //...so to remove a filter, the local storage item must be wiped
     localStorage.setItem('currentFiltering', JSON.stringify(""));
     refreshPage();
 };
@@ -720,18 +737,7 @@ function changeValueText() {
     };
 };
 
-const stickerModal = document.getElementById("stickerModal");
-function openStickerModal() {
-    stickerModal.classList.remove("hidden");
-    overlay.classList.remove("hidden");
-};
-
-function closeStickerModal() {
-    stickerModal.classList.add("hidden");
-    overlay.classList.add("hidden");
-};
-
-    //Sticker functions
+//Sticker functions
 let stickerToAdd; //A variable that is set by event listeners later
 function selectSticker(event) {
     for (let i = 0; i < stickerSelectDiv.children.length; i++) {
@@ -755,7 +761,7 @@ function setSticker() {
         alert("I don't know how to put a sticker on that yet 😢"); //Check for divider
         return;
     };
-    everythingArray[wantedBookPosition - 1].sticker = selectedSticker;
+    everythingArray[wantedBookPosition - 1].sticker = selectedSticker; //Wanted book position - 1 because 0-indexing
     refreshPage();
 };
 
