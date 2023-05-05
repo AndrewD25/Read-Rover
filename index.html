@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Read Rover: Book Inventory Tool</title>
+        <title>Organize Your Bookshelf | Read Rover</title>
         <meta charset="UTF-8">
         <meta name="description" content="Keep track of book inventory and order with the most user-friendly and visually appealing reading list tool out there">
         <meta name="author" content="Andrew Deal">
@@ -12,7 +12,7 @@
     <body>
         <div id="toolBox">
             <div class="darkBackground">
-                <img id="titleLogo" src="logov3.png">
+                <img id="titleLogo" src="logov3.png" alt="Read Rover logo">
             </div>
             <!--Form that adds books-->
             <div class="content">
@@ -53,11 +53,11 @@
                     <label for="name" id="readLabel">Read?</label>
                     <input type="checkbox" id="read" name="read">
                     <label>Rating:</label>
-                    <img src="emptyStar.png" id="star0" class="formStar">
-                    <img src="emptyStar.png" id="star1" class="formStar">
-                    <img src="emptyStar.png" id="star2" class="formStar">
-                    <img src="emptyStar.png" id="star3" class="formStar">
-                    <img src="emptyStar.png" id="star4" class="formStar">
+                    <img src="emptyStar.png" id="star0" class="formStar" alt="rating star">
+                    <img src="emptyStar.png" id="star1" class="formStar" alt="rating star">
+                    <img src="emptyStar.png" id="star2" class="formStar" alt="rating star">
+                    <img src="emptyStar.png" id="star3" class="formStar" alt="rating star">
+                    <img src="emptyStar.png" id="star4" class="formStar" alt="rating star">
                     <label for="favorite" id="favoriteLabel">Favorite?</label>
                     <input type="checkbox" id="favorite" name="favorite">
 
@@ -83,29 +83,17 @@
                         <button type="button" id="replaceBtn">Replace #</button>
                         <input type="number" id="replaceNumber" name="replaceNumber" min="1">
                     </div>
-
-                    <!-- FOR DIVIDERS
-                    <div class="centeringDiv">
-                        <button type="button" id="addDividerBtn">Add divider between</button>
-                        <input type="number" id="insertDividerAfterNumber" min="0">
-                        <--<p>and</p>--
-                        <input type="number" id="insertDividerBeforeNumber" min="1">
-                        <--<p>with title</p>--
-                        <input type="text" id="dividerTitleInput">
-                    </div>
-                    -->
-
                 </form> 
             </div>
             <hr>
-            <div id="toolButtons">
-                <button title="Export to Clipboard"><img src="exportIcon.png"></button>
-                <button title="Import Data"><img src="importIcon.png"></button>
-                <button title="Manual Save"><img src="saveIcon.png"></button>
-                <button title="Reset"><img src="resetIcon.png"></button>
-                <button title="Filter"><img src="filterIcon.png"></button>
-                <button title="Dividers"><img src="dividerIcon.png"></button>
-                <button title="Stickers"><img src="stickerIcon.png"></button>
+            <div id="toolButtons"> 
+                <button title="Export to Clipboard"><img src="exportIcon.png" alt="Export"></button>
+                <button title="Import Data"><img src="importIcon.png" alt="Import"></button>
+                <button title="Manual Save"><img src="saveIcon.png" alt="Save"></button>
+                <button title="Reset"><img src="resetIcon.png" alt="Reset"></button>
+                <button title="Filter"><img src="filterIcon.png" alt="Filter"></button>
+                <button title="Dividers"><img src="dividerIcon.png" alt="Divider"></button>
+                <button title="Stickers"><img src="stickerIcon.png" alt="Sticker"></button>
             </div>
             <hr id="hrAboveBottomMenu" class="hidden">
             <div id="filterMenu">
@@ -149,15 +137,16 @@
             </div> 
         </div> 
 
-        <div id="main">
+        <div id="main"> 
             <div style="text-align: center;">
                 <h1>Your Collection:</h1>
             </div>
+            <!--Where all books will be appended by JS-->
         </div>
 
         <!--Section for the modal windows to pop up-->
         <div class="modal hidden" id="modalWindow">
-            <img src="alert.png">
+            <img src="alert.png" alt="warning">
             <h1>Are you sure?</h1>
             <h3>Deleted items are deleted forever!</h3>
             <button class="leftModalBtn">Yes, delete it!</button>
@@ -165,7 +154,7 @@
             <button class="rightModalBtn">Cancel</button>
         </div>
         <div class="modal hidden" id="modalWindow2">
-            <img src="alert.png">
+            <img src="alert.png" alt="warning">
             <h1>You pressed the reset button!</h1>
             <h3>Resetting will delete all books from your list</h3>
             <button class="leftModalBtn">Do it!</button>
@@ -175,18 +164,20 @@
         <div class="modal hidden" id="stickerModal">
             <h1>Add a Sticker to a Book</h1>
 
-            <div id="imgGrid">
-                <img src="crossoverIconV2.png" title="Crossover Marker">
-                <img src="loveThis.png" title="Love This!">
-                <img src="thumbsUp.jpg" title="Booster Approves">
-                <img src="thumbsDown.jpg" title="Disappointed Darkseid">
-                <img src="mindBlown.jpg" title="No %#&@$%! Way">
-                <img src="happy.png" title="The Bat-Smile">
-                <img src="sad.png" title="Sad Peter Parker">
-                <img src="angry.png" title="Gamma Rage">
-                <img src="dying.png" title="💀">
-                <img src="Heyayayayay.jpg" title="Heyayayayay!">
-                <img src="eyeBeads.jpg" title="Shocked Spider-Man">
+            <div id="imgGrid"> <!--Sticker Images-->
+                <img src="crossoverIconV2.png" title="Crossover Marker" alt="Crossover Marker sticker">
+                <img src="loveThis.png" title="Love This!" alt="Love This! sticker">
+                <img src="thumbsUp.jpg" title="Booster Approves" alt="Booster Approves sticker">
+                <img src="thumbsDown.jpg" title="Disappointed Darkseid" alt="Disappointed Darkseid sticker">
+                <img src="mindBlown.jpg" title="No %#&@$%! Way" alt="No %#&@$%! Way sticker">
+                <img src="happy.png" title="The Bat-Smile" alt="The Bat-Smile sticker">
+                <img src="dying.png" title="💀" alt="💀 sticker">
+                <img src="sad.png" title="Sad Peter Parker" alt="Sad Peter Parker sticker">
+                <img src="Heyayayayay.jpg" title="Heyayayayay!" alt="Heyayayayay! sticker">
+                <img src="angry.png" title="Gamma Rage" alt="Gamma Rage sticker">
+                <img src="eyeBeads.jpg" title="Shocked Spider-Man" alt="Shocked Spider-Man sticker">
+                <img src="visionCry.jpg" title="Moisture Buildup in Optical Sensors" alt="Vision sticker">
+                <img src="thomas.png" title="Thomas is Done" alt="Thomas is Done sticker">
             </div>
             
             <p>Currently Selected:</p> <em><p id="selectedStickerText">None</p></em>
