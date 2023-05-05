@@ -1,4 +1,8 @@
-/* Add media query for mobile styling later */
+/* Add media query for mobile styling over summer */
+
+  /*////////////////
+ / Large Sections /
+////////////////*/
 
 html, body, input, select, button, label, textarea, span, details, summary {
     cursor: url("DP.cur") 15 15, auto;
@@ -13,7 +17,30 @@ body {
     background-color: powderblue;*/
 }
 
-/*Tools stuff*/
+#main { 
+    background-color: rgb(182, 1, 1);
+    border: 1px solid black;
+    width: 55.5vw;
+    /*min-width: 550px;*/
+    margin-top: 1vh;
+    float: right;
+    margin-right: 2vw;
+    font-size: 1.5vw;
+}
+
+.content {
+    text-align: center;
+    background-color: rgb(202, 202, 202);
+    border-top: 1px solid black;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    line-height: 2;
+}
+
+  /*///////////
+ / Left Side /
+///////////*/
+
 #toolBox {
     background-color: rgb(202, 202, 202);
     width: 37.5vw;
@@ -27,6 +54,8 @@ body {
     padding-bottom: 0.5vw;
 }
 
+
+/*Logo Heading*/
 .darkBackground {
     background-color: rgb(53, 53, 53);
     text-align: center;
@@ -38,11 +67,91 @@ body {
     margin-right: 30px;
 }
 
-.darkBackground > h1 {
-    color: white;
-    display: inline;
+
+/*Book-Input Form*/
+.content > form {
+    font-size: calc(7px + 0.9vw);
 }
 
+.content > form > label {
+    display: inline-block
+}
+
+.content > form > input {
+    font-size: calc(4px + 0.9vw);
+}
+
+#publisher, #continuity { /*Most of the IDs in this section for specific form elements*/
+    width: 26%;
+}
+
+#series, #name { /*Name = title*/
+    width: 40%;
+}
+
+#numberType {
+    background-color: rgba(0, 0, 0, 0);
+    text-align: center;
+    font-size: calc(7px + 0.9vw);
+    font-family: "Times New Roman", Times, serif; 
+    border: white;
+}
+
+#number {
+    width: 10%;
+}
+
+#format {
+    width: 28%;
+    text-align: center;
+    font-size: calc(6px + 0.9vw);
+    font-family: "Times New Roman", Times, serif; 
+}
+
+#readLabel {
+    margin-left: 1vw;
+}
+
+#read {
+    margin-right: 1vw;
+}
+
+input[type=checkbox] {
+    transform: scale(1.5);
+}
+
+.formStar {
+    position: relative;
+    top: 1.1vh;
+    width: 6%; 
+}
+
+#favoriteLabel {
+    margin-left: 1vw;
+}
+
+#notes {
+    width: 82%;
+}
+
+#imgLink {
+    width: 55%
+}
+
+.centeringDiv > button { /*Buttons to add book*/
+    height: 2vw;
+    font-size: calc(5px + 0.9vw);
+    white-space: nowrap;
+    text-overflow: clip;
+}
+
+.centeringDiv > input[type=number] { /*Position input*/
+    width: 4vw;
+    height: calc(2vw - 6px);
+    font-size: calc(4px + 0.9vw);
+}
+
+/*Tool Buttons*/
 #toolButtons {
     display: flex;
     justify-content: space-around;
@@ -56,6 +165,11 @@ body {
     width: 100%;
 }
 
+  /*////////////
+ / Tool Menus /
+////////////*/
+
+/*Filter*/
 #filterDetails {
     display: inline;
     margin: 0;
@@ -98,8 +212,8 @@ body {
     font-family: "Times New Roman", Times, serif; 
 }  */ 
 
-#bottomHalfFilterMenu {
-    display: none;
+#bottomHalfFilterMenu { 
+    display: none; /*Some menus and windows start hidden until JS shows them on event*/
 }
 
 #bottomHalfFilterMenu > button {
@@ -115,6 +229,7 @@ body {
     color:rgb(53, 53, 53);
 }
 
+/*Dividers*/
 #dividerMenu {
     display: none;
     text-align: center;
@@ -137,154 +252,6 @@ body {
     margin-right: 1vw;
 }
 
-/*Main sections*/
-#main { 
-    background-color: rgb(182, 1, 1);
-    border: 1px solid black;
-    width: 55.5vw;
-    /*min-width: 550px;*/
-    margin-top: 1vh;
-    float: right;
-    margin-right: 2vw;
-    font-size: 1.5vw;
-}
-
-/*#main > h1 {
-
-}*/
-
-.content {
-    text-align: center;
-    background-color: rgb(202, 202, 202);
-    border-top: 1px solid black;
-    padding-top: 1%;
-    padding-bottom: 1%;
-    line-height: 2;
-}
-
-    /*Styling for stickers on books*/
-.sticker {
-    /*position: absolute;*/
-    /*transform: translateX(10vw);*/
-    width: calc(30px + 0.9vw);
-}
-
-.alignRight {
-    float: right;
-    display: inline-flex;
-    align-items: center;
-}
-
-/*
-@media screen and (min-width: 480px) {
-    body {
-      background-color: lightgreen;
-    }
-  }*/
-
-.content > form {
-    font-size: calc(7px + 0.9vw);
-}
-
-.content > form > label {
-    display: inline-block
-}
-
-.content > form > input {
-    font-size: calc(4px + 0.9vw);
-}
-
-/*----------------------------*/
-/* Specific Form input areas */
-#publisher, #continuity {
-    width: 26%;
-}
-
-#series {
-    width: 40%;
-}
-
-#numberType {
-    background-color: rgba(0, 0, 0, 0);
-    text-align: center;
-    font-size: calc(7px + 0.9vw);
-    font-family: "Times New Roman", Times, serif; 
-    border: white;
-}
-
-#number {
-    width: 10%;
-}
-
-#name, #notes {
-    width: 82%;
-}
-
-#name {
-    width: 42%
-}
-
-#format {
-    width: 28%;
-    text-align: center;
-    font-size: calc(6px + 0.9vw);
-    font-family: "Times New Roman", Times, serif; 
-}
-
-#readLabel {
-    margin-left: 1vw;
-}
-
-#read {
-    margin-right: 1vw;
-}
-
-input[type=checkbox] {
-    transform: scale(1.5);
-}
-
-.formStar {
-    position: relative;
-    top: 1.1vh;
-    width: 6%; 
-}
-
-.smallStar{
-    position: relative;
-    top: 1vh;
-    width: 5%; 
-}
-
-#favoriteLabel {
-    margin-left: 1vw;
-}
-
-#imgLink {
-    width: 55%
-}
-
-.centeringDiv {
-    width: 33%;
-    margin-top: 10px;
-    margin-left: auto;
-    margin-right: auto;
-    display: flex;
-    justify-content: space-around;
-}
-
-.centeringDiv > button {
-    height: 2vw;
-    font-size: calc(5px + 0.9vw);
-    white-space: nowrap;
-    text-overflow: clip;
-  }
-  
-  .centeringDiv > input[type=number] {
-    width: 4vw;
-    height: calc(2vw - 6px);
-    font-size: calc(4px + 0.9vw);
-  }
-
 #addDividerBtn {
     height: 2vw;
 }
@@ -293,17 +260,23 @@ input[type=checkbox] {
     height: 1.5vw;
 }
 
-/*----------------------------*/
-/*---------------------------*/
+/*Sticker menu styling in Modal section near bottom*/
 
-/* MAIN SECTION FOR BOOKS */
+  /*///////////////////
+ / Main Book Section /
+///////////////////*/
+
 .book {
     text-align: left;
 }
 
+.sticker { /*Stickers on books*/
+    width: calc(30px + 0.9vw);
+}
+
 details {
     margin-left: 3%;
-    margin-right: 3%; /*Change units later to not use px*/
+    margin-right: 3%; 
 }
 
 .insideDetails {
@@ -346,11 +319,6 @@ summary {
     border: 1px solid rgb(141, 141, 141);
 }
 
-.smallStar {
-    width: 10%;
-    display: inline; 
-}
-
 .insideDetails > textarea {
     width: 99%;
     resize: vertical;
@@ -376,11 +344,7 @@ summary {
     font-size: calc(5px + 0.9vw);
 }
 
-#up {
-    background-color: aliceblue;
-}
-
-#down {
+#up, #down {
     background-color: aliceblue;
 }
 
@@ -388,10 +352,17 @@ summary {
     background-color: rgb(255, 61, 61);
 }
 
-.hidden {
-    display: none;
+/*Marking as Favorite*/
+.favoriteBook {
+    background-color: rgb(224, 202, 1);
 }
 
+.favoriteBook > details > div {
+    background-color: rgb(241, 227, 100);
+}
+
+
+/*Dividers in book section*/
 .divider {
     text-align: center;
     display: flex;
@@ -415,7 +386,10 @@ summary {
     font-size: calc(5px + 0.75vw);
 }
 
-/* CLASSES TO MAKE MODAL WORK */
+  /*///////////////
+ / Modal Windows /
+///////////////*/
+
 .modal {
     position: fixed;
     top: 50%;
@@ -485,7 +459,6 @@ summary {
     background-color: rgb(221, 56, 56);
 }
 
-    /* ------------For stickers-------------- */
 #stickerModal {
     width: 50vw;
     justify-content: space-around;   
@@ -533,14 +506,31 @@ summary {
     filter: brightness(60%);
 }
 
-/* Classes for marking as favorite */
+  /*////////////////
+ / Common Classes /
+////////////////*/
 
-.favoriteBook {
-    background-color: rgb(224, 202, 1);
+.alignRight {
+    float: right;
+    display: inline-flex;
+    align-items: center;
 }
 
-.favoriteBook > details > div {
-    background-color: rgb(241, 227, 100);
+.centeringDiv {
+    width: 33%;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    justify-content: space-around;
 }
 
+.smallStar{
+    position: relative;
+    top: 1vh;
+    width: 10%; 
+}
 
+.hidden {
+    display: none;
+}
