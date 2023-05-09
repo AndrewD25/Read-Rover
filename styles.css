@@ -135,7 +135,7 @@ input[type=checkbox] {
     margin-top: 10px;
     margin-left: auto;
     margin-right: auto;
-    margin-bottom: max(-1vw);
+    margin-bottom: -0.7vw;
     display: flex;
     justify-content: space-around;
 }
