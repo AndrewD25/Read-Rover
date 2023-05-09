@@ -1,16 +1,24 @@
 "use strict";
 
-/*/////////////////////////////
-    Note this is just brainstorming and a to-do for all time, not a to-do before May 15ish
-    To Do:
-
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    Want To Do (Can do now):
+ ------------------------------
     Refactor if possible?
-    Continue to improve and refactor CSS (and media query?) 
-    Set max width and height for the box on the left proportionate to the vw and vh? (I'm not sure what I meant by this)
-    Write Documentation
-    Check program plan for more ideas
+    Cool sound effect on mouse click
 
-*/////////////////////////////
+    Ideas for Future Features (Add some over Summer when I have more time and knowledge)
+  -----------------------------------------------------------------------------------------
+    Media query css?
+    Eventually learn to set up a db
+        - Maybe users are able to share their profiles somehow?
+    Separate web page for keeping track of loans
+    Way to create a wishlist?
+    Way to create a list of books that should be added that is faster
+        than adding each book to create a "add in detail later" type feature
+    It would be cool to somehow generate stats for a user
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
 
 ///// VARIABLES /////
 
@@ -255,7 +263,17 @@ function pageOnload() {
                             drawBook(everythingArray[i]);
                         };
                         break;
-                    default: //These are just, "If book.property includes 'includes' variable"
+                    case "any": //Checks all properties for the 'includes' variable
+                        let draw = false;
+                        for (let property in everythingArray[i]) {
+                            let currentProp = everythingArray[i][property];
+                            if (currentProp.toString().toLowerCase().includes(includes)) {
+                                draw = true;
+                            };
+                        };
+                        if (draw) drawBook(everythingArray[i]);
+                        break;
+                    default: //These are just, "If any other specific book property includes the 'includes' variable"
                         if (everythingArray[i][filterBy].toLowerCase().includes(includes)) {
                             drawBook(everythingArray[i]);
                         };
@@ -270,7 +288,7 @@ function pageOnload() {
 function getContrast(r, g, b){
     // calculate the contrast ratio
     var yiq = ((r*299)+(g*587)+(b*114))/1000;
-    return yiq;
+    return yiq >= 128;
 };
 
 function hexToRgb(hex) {
@@ -287,7 +305,7 @@ function drawDivider(divi) {
     newDivider.style.backgroundColor = divi.color;
     let rgb = hexToRgb(divi.color);
     //Gets Rgb of the background color and uses it to set better contrasting text color
-    newDivider.style.color = (getContrast(rgb.r, rgb.g, rgb.b) >= 128) ? "black" : "white";
+    newDivider.style.color = (getContrast(rgb.r, rgb.g, rgb.b)) ? "black" : "white";
     let diviNum = document.createElement("p");
     diviNum.textContent = everythingArray.indexOf(divi) + 1 +".";
     let diviTitle = document.createElement("h2");
@@ -744,7 +762,7 @@ function selectSticker(event) {
         stickerSelectDiv.children[i].classList.remove("selected");
     };
     event.target.classList.add("selected");
-    selectedStickerText.textContent = event.target.getAttribute("title");
+    document.getElementById("selectedStickerText").textContent = event.target.getAttribute("title");
     stickerToAdd = event.target.getAttribute("src");
 }
 
