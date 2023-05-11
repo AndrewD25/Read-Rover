@@ -816,14 +816,20 @@ function setSticker() {
     refreshPage();
 };
 
-function addNewLines(str) { //Called to add new lines to a text file string
+function addNewLines(str) { //Add new lines to the txt file string
     const delimiter = '{"p';
     const doubleNewLine = '\n\n';
     let result = '';
     let index = 0;
+    let isFirstDelimiterFound = false; // Flag to track the first delimiter
+  
     while (index < str.length) {
       if (str.startsWith(delimiter, index)) {
-        result += doubleNewLine;
+        if (isFirstDelimiterFound) {
+          result += doubleNewLine;
+        } else {
+          isFirstDelimiterFound = true;
+        };
         result += delimiter;
         index += delimiter.length;
       };
