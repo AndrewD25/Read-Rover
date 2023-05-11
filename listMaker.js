@@ -3,19 +3,21 @@
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     Want To Do (Can do now):
  ------------------------------
-    Refactor if possible?
-    
+    Refactor and clean up
+    Bug fixes from home computer
+
 
     Ideas for Future Features (Add some over Summer when I have more time and knowledge)
   -----------------------------------------------------------------------------------------
     Media query css?
     Eventually learn to set up a db
-        - Maybe users are able to share their profiles somehow?
-    Separate web page for keeping track of loans
+        - If usernames created, place username in name of .txt download file
+    Separate web page for keeping track of loans?
     Way to create a wishlist?
     Way to create a list of books that should be added that is faster
         than adding each book to create a "add in detail later" type feature
-    It would be cool to somehow generate stats for a user
+    It would be cool to somehow generate stats for a user 
+        - maybe this could be in the TXT file
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
@@ -673,7 +675,7 @@ function populateForm(event) { //Used to fill the form with the data from a book
     bookReplaceInput.value = book.position + 1; // Sets position to more easily replace the one being copied
 };
 
-// Function to export the data, encoded using rot13
+/*/ Function to export the data, encoded using rot13                    ~Original Export/Import Functions~
 function exportCopy() {
     let encodedData = rot13Encode(JSON.stringify(everythingArray));
     navigator.clipboard.writeText(encodedData);
@@ -688,7 +690,7 @@ function importData() {
         everythingArray = JSON.parse(decodedData);
         refreshPage();
     }
-};
+};*/
 
 //Tool Menu Functions
 let filterMenuOpen = !((localStorage.getItem("currentFiltering") !== null) && JSON.parse(localStorage.getItem("currentFiltering")) !== "");
@@ -814,6 +816,64 @@ function setSticker() {
     refreshPage();
 };
 
+function addNewLines(str) { //Called to add new lines to a text file string
+    const delimiter = '{"p';
+    const doubleNewLine = '\n\n';
+    let result = '';
+    let index = 0;
+    while (index < str.length) {
+      if (str.startsWith(delimiter, index)) {
+        result += doubleNewLine;
+        result += delimiter;
+        index += delimiter.length;
+      };
+      result += str[index];
+      index++;
+    };
+    return result;
+};
+
+function downloadTextFile() { //Downloads a string as a .txt file
+    let blob = new Blob([addNewLines(JSON.stringify(everythingArray))], { type: 'text/plain' }); //Downloads JSON of everything array with lines added for readability
+    let link = document.createElement('a');
+    link.setAttribute('href', URL.createObjectURL(blob));
+    link.setAttribute('download', 'readrover_data' + '.txt');
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+};
+
+function importFile() { //This section allows my import button to have the functionality of a file select input
+    let fileInput = document.getElementById('fileInput');
+    fileInput.click();
+};
+let fileInput = document.getElementById('fileInput');
+fileInput.addEventListener('change', function() {
+    let file = fileInput.files[0];
+    if (file) {
+        try {
+            if (file.type !== 'text/plain') {
+                throw new Error('Invalid file type. Please select a text file.');
+            ;}
+            // File is a valid text file
+            let reader = new FileReader();
+            reader.onload = function(e) {
+                let contents = e.target.result;
+                let text = contents.toString(); // Convert the file contents to a string
+                text = contents.replace('\n', ''); // Parses out newlines
+                localStorage.setItem("everythingArray", text);
+                everythingArray = JSON.parse(text);
+                refreshPage();
+            };
+            reader.readAsText(file);
+        } catch (error) {
+            // Display an alert to the user
+            alert(error.message);
+        };
+    };
+});
+
 //// Set up Onclicks and onloads ////
 addBookBefore.onclick = appendBefore;
 addBookAfter.onclick = appendAfter;
@@ -823,8 +883,8 @@ window.onload = pageOnload;
 
 // Tool button onclicks //
 let buttonsArray = document.getElementById("toolButtons").children;
-buttonsArray[0].onclick = exportCopy;
-buttonsArray[1].onclick = importData;
+buttonsArray[0].onclick = downloadTextFile; //Fix these later? Were exportCopy and importData
+buttonsArray[1].onclick = importFile;
 buttonsArray[2].onclick = save;
 buttonsArray[3].onclick = showResetModal;
 toggleFilterMenu();
