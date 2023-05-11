@@ -4,7 +4,7 @@
     Want To Do (Can do now):
  ------------------------------
     Refactor if possible?
-    Cool sound effect on mouse click
+    
 
     Ideas for Future Features (Add some over Summer when I have more time and knowledge)
   -----------------------------------------------------------------------------------------
@@ -407,7 +407,7 @@ function drawBook(book) {
     rightSpan.appendChild(document.createElement("br"));
 
     let nameLabel = document.createElement("p");
-    nameLabel.textContent = "Name:";
+    nameLabel.textContent = "Title:";
     let name = document.createElement("p");
     name.innerHTML = book.name != "" ? book.name : `<i>?</i>`;
     rightSpan.appendChild(nameLabel);
@@ -494,37 +494,46 @@ function drawBook(book) {
     notesBox.addEventListener("keyup", saveChangesNotes);
     insideDiv.appendChild(notesBox);
 
-    //Up, down, delete buttons
+    //Up, down, populate, delete buttons
     let buttonsContainer = document.createElement("div");
     let upDownContainer = document.createElement("span");
+    let popDelContainer = document.createElement("span");
     let upBtn = document.createElement("button");
     let downBtn = document.createElement("button");
+    let popBtn = document.createElement("button");
     let deleteBtn = document.createElement("button");
 
         //u,d,d buttons text
     upBtn.textContent = "Move Up";
     downBtn.textContent = "Move Down";
+    popBtn.textContent = "Populate Form"
     deleteBtn.textContent = "Delete Book";
 
        //u,d,d button classes and ids
     buttonsContainer.classList.add("posContainer");
     upDownContainer.setAttribute("id", "upDownContainer")
+    popDelContainer.setAttribute("id", "popDelContainer")
     upBtn.classList.add("posButtons");
     upBtn.setAttribute("id", "up")
     downBtn.classList.add("posButtons");
-    downBtn.setAttribute("id", "down")
+    downBtn.setAttribute("id", "down");
+    popBtn.classList.add("posButtons");
+    popBtn.setAttribute("id", "populate");
     deleteBtn.classList.add("posButtons");
     deleteBtn.setAttribute("id", "delete");
 
         //u,d,d button click event listeners
     upBtn.addEventListener("click", moveUp);
     downBtn.addEventListener("click", moveDown);
+    popBtn.addEventListener("click", populateForm);
     deleteBtn.addEventListener("click", setUpDel);
 
     upDownContainer.appendChild(upBtn);
     upDownContainer.appendChild(downBtn);
+    popDelContainer.appendChild(popBtn);
+    popDelContainer.appendChild(deleteBtn);
     buttonsContainer.appendChild(upDownContainer);
-    buttonsContainer.appendChild(deleteBtn);
+    buttonsContainer.appendChild(popDelContainer);
     insideDiv.appendChild(buttonsContainer);
 
     //Add the book's container to the document
@@ -621,7 +630,7 @@ function closeStickerModal() {
 
 let bookToDelete;
 function setUpDel(event) {
-    let index = Number(event.target.parentElement.parentElement.previousElementSibling.textContent[0]) - 1;  //Gets number from summary
+    let index = Number(event.target.parentElement.parentElement.parentElement.previousElementSibling.textContent[0]) - 1;  //Gets number from summary
     bookToDelete = everythingArray[index];
     showDeleteModal();
 };
@@ -631,7 +640,7 @@ function setUpDiviDel(event) {
     bookToDelete = everythingArray[index];
     showDeleteModal();
 };
-        
+      
 function delBook() { //Remove a book from the array by slicing it and reassigning a shallow copy of the slices
     let book = bookToDelete;
     if (book != undefined) {
@@ -640,6 +649,28 @@ function delBook() { //Remove a book from the array by slicing it and reassignin
         everythingArray = [...firstHalf, ...secondHalf];
     };
     refreshPage();
+};
+
+function populateForm(event) { //Used to fill the form with the data from a book
+    let index = Number(event.target.parentElement.parentElement.parentElement.previousElementSibling.textContent[0]) - 1; //Uses same logic as setUpDiviDel()
+    let book = everythingArray[index];
+    console.log(book); //DEL LATER
+    bookPublisherInput.value = book.publisher;
+    bookContinuityInput.value = book.continuity;
+    bookSeriesInput.value = book.series;
+    bookNumberTypeInput.value = book.numberType;
+    bookNumberInput.value = book.number;
+    bookNameInput.value = book.name;
+    bookReadInput.checked = book.read;
+    for (let i = 0; i < 5; i++) { //Iterate over 5 stars
+        formStars[i].setAttribute("src", book.stars[i].getAttribute("src"));
+        formStarImgs = book.rating;
+    };
+    bookFavoriteInput.checked = book.favorite;
+    bookNotesInput.value = book.notes;
+    bookImageInput.value = book.image;
+    bookPositionInput.value = book.position + 1;
+    bookReplaceInput.value = book.position + 1; // Sets position to more easily replace the one being copied
 };
 
 // Function to export the data, encoded using rot13
@@ -816,7 +847,7 @@ filterPropertySelect.onchange = changeValueText;
 filterMenu.children[1].children[0].onclick = setFilter; //Left filter button (set)
 filterMenu.children[1].children[1].onclick = clearFilter; //Right filter button (clear)
 
-// Buttons inside modal windows //
+// Buttons and event listeners for modal windows //
 document.getElementsByClassName("leftModalBtn")[0].onclick = delBook;
 document.getElementsByClassName("rightModalBtn")[0].onclick = closeDeleteModal;
 document.getElementsByClassName("leftModalBtn")[1].onclick = reset;
@@ -824,10 +855,17 @@ document.getElementsByClassName("rightModalBtn")[1].onclick = closeResetModal;
 document.getElementsByClassName("leftModalBtn")[2].onclick = setSticker;
 document.getElementsByClassName("rightModalBtn")[2].onclick = closeStickerModal;
 
+document.addEventListener("keydown", function (e) { //Close all modals when esc key is pressed
+    if (e.key === "Escape") {
+        closeDeleteModal();
+        closeResetModal();
+        closeStickerModal();
+    };
+});
+
 //Add event listeners to each img in the sticker modal
 for (let i = 0; i < stickerSelectDiv.children.length; i++) {
     stickerSelectDiv.children[i].addEventListener("click", selectSticker)
 };
-
 
 

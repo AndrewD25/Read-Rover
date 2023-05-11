@@ -262,6 +262,11 @@ input[type=checkbox] {
     height: 1.5vw;
 }
 
+#dividerMenu input[type=color] {
+    width: 4vw;
+    padding: 0;
+}
+
 /*Sticker menu styling in Modal section near bottom*/
 
   /*///////////////////
@@ -269,7 +274,7 @@ input[type=checkbox] {
 ///////////////////*/
 
 #main { 
-    background-color: rgb(182, 1, 1);
+    background-color: rgb(226, 38, 38);
     border: 1px solid black;
     width: 55.5vw;
     /*min-width: 550px;*/
@@ -350,7 +355,15 @@ summary {
 #upDownContainer {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     width: 35%;
+}
+
+#popDelContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 45%;
 }
 
 .posButtons {
@@ -359,6 +372,10 @@ summary {
 
 #up, #down {
     background-color: aliceblue;
+}
+
+#populate {
+    background-color: rgb(97, 195, 219);
 }
 
 #delete {
