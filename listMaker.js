@@ -545,7 +545,7 @@ function drawBook(book) {
 function saveChangesRead(event) {
     //Get index of the book object that corresponds with the checklist in everything array
       //Uses the text of summary, since it is based on the object's index
-    let cboxParentIndex = Number(event.target.parentElement.parentElement.parentElement.previousElementSibling.textContent[0]) - 1;
+    let cboxParentIndex = parseInt(event.target.parentElement.parentElement.parentElement.previousElementSibling.textContent) - 1;
     everythingArray[cboxParentIndex].read = event.target.checked;
     save();
 };   
@@ -553,7 +553,7 @@ function saveChangesRead(event) {
 function saveChangesFavorite(event) {
     //Get index of the book object that corresponds with the checklist in everything array
       //Uses the text of summary, since it is based on the object's index
-    let cboxParentIndex = Number(event.target.parentElement.parentElement.parentElement.previousElementSibling.textContent[0]) - 1;
+    let cboxParentIndex = parseInt(event.target.parentElement.parentElement.parentElement.previousElementSibling.textContent) - 1;
     let book = everythingArray[cboxParentIndex];
     let parentDiv = event.target.parentElement.parentElement.parentElement.parentElement.parentElement;
     book.favorite = event.target.checked;
@@ -570,13 +570,13 @@ function saveChangesFavorite(event) {
 
 function saveChangesNotes(event) {
     //Functions basically the same way as the saveChangesRead function but runs on Keypress and Blur instead of click
-    let notesParentIndex = Number(event.target.parentElement.previousElementSibling.textContent[0]) - 1;
+    let notesParentIndex = parseInt(event.target.parentElement.previousElementSibling.textContent) - 1;
     everythingArray[notesParentIndex].notes = event.target.value; 
     save();
 };
 
 function moveUp(event) {
-    let book = everythingArray[Number(event.target.parentElement.parentElement.parentElement.previousElementSibling.textContent[0]) - 1];
+    let book = everythingArray[parseInt(event.target.parentElement.parentElement.parentElement.previousElementSibling.textContent) - 1];
     //Uses slicing similarly to how books are added to basically decrease a book's array index by 1
     if (book.position > 0) {
         let firstHalf = everythingArray.slice(0, book.position - 1);
@@ -588,7 +588,7 @@ function moveUp(event) {
 };
 
 function moveDown(event) {
-    let book = everythingArray[Number(event.target.parentElement.parentElement.parentElement.previousElementSibling.textContent[0]) - 1];
+    let book = everythingArray[parseInt(event.target.parentElement.parentElement.parentElement.previousElementSibling.textContent) - 1];
     //Uses slicing similarly to how books are added to basically increase a book's array index by 1
     if (book.position < everythingArray.length - 1) {
         let firstHalf = everythingArray.slice(0, book.position);
@@ -632,13 +632,13 @@ function closeStickerModal() {
 
 let bookToDelete;
 function setUpDel(event) {
-    let index = Number(event.target.parentElement.parentElement.parentElement.previousElementSibling.textContent[0]) - 1;  //Gets number from summary
+    let index = parseInt(event.target.parentElement.parentElement.parentElement.previousElementSibling.textContent) - 1;  //Gets number from summary
     bookToDelete = everythingArray[index];
     showDeleteModal();
 };
 
 function setUpDiviDel(event) {
-    let index = Number(event.target.previousSibling.previousSibling.textContent.slice(0, 1)) - 1; //Gets number from left number
+    let index = parseInt(event.target.previousSibling.previousSibling.textContent) - 1; //Gets number from left number
     bookToDelete = everythingArray[index];
     showDeleteModal();
 };
@@ -675,7 +675,45 @@ function populateForm(event) { //Used to fill the form with the data from a book
     bookReplaceInput.value = book.position + 1; // Sets position to more easily replace the one being copied
 };
 
-/*/ Function to export the data, encoded using rot13                    ~Original Export/Import Functions~
+/*/ Function to export the data, encoded using rot13     
+               ~Original Export/Import Functions~
+// Function to encode a string using rot13
+function rot13Encode(str) {
+    let result = '';
+    for (let i = 0; i < str.length; i++) {
+      let c = str.charCodeAt(i);
+      if (c >= 65 && c <= 90) {  // Upper case letters
+        result += String.fromCharCode((c - 65 + 13) % 26 + 65);
+      } else if (c >= 97 && c <= 122) {  // Lower case letters
+        result += String.fromCharCode((c - 97 + 13) % 26 + 97);
+      } else {  // Symbols and spaces
+        result += str.charAt(i);
+      };
+    };
+    result = "#" + result //If old import data is used, it will not have #, so does not need to be decoded
+    return result;
+};
+  
+// Function to decode a string using rot13
+function rot13Decode(str) {
+      if (str.slice(0, 1) === "#") {
+          str = str.slice(1);
+          let result = '';
+          for (let i = 0; i < str.length; i++) {
+              let c = str.charCodeAt(i);
+              if (c >= 65 && c <= 90) {  // Upper case letters
+                  result += String.fromCharCode((c - 65 + 13) % 26 + 65);
+              } else if (c >= 97 && c <= 122) {  // Lower case letters
+                  result += String.fromCharCode((c - 97 + 13) % 26 + 97);
+              } else {  // Symbols and spaces
+          result += str.charAt(i);
+          };
+      };
+      return result;
+    };
+    return str; //If there is not # at beginning, it does not have to be decoded
+};
+
 function exportCopy() {
     let encodedData = rot13Encode(JSON.stringify(everythingArray));
     navigator.clipboard.writeText(encodedData);
@@ -727,43 +765,6 @@ function toggleDividerMenu() {
         dividerMenu.style.display = "block";
     };
     dividerMenuOpen = !dividerMenuOpen
-};
-
-// Function to encode a string using rot13
-function rot13Encode(str) {
-    let result = '';
-    for (let i = 0; i < str.length; i++) {
-      let c = str.charCodeAt(i);
-      if (c >= 65 && c <= 90) {  // Upper case letters
-        result += String.fromCharCode((c - 65 + 13) % 26 + 65);
-      } else if (c >= 97 && c <= 122) {  // Lower case letters
-        result += String.fromCharCode((c - 97 + 13) % 26 + 97);
-      } else {  // Symbols and spaces
-        result += str.charAt(i);
-      };
-    };
-    result = "#" + result //If old import data is used, it will not have #, so does not need to be decoded
-    return result;
-};
-  
-// Function to decode a string using rot13
-function rot13Decode(str) {
-      if (str.slice(0, 1) === "#") {
-          str = str.slice(1);
-          let result = '';
-          for (let i = 0; i < str.length; i++) {
-              let c = str.charCodeAt(i);
-              if (c >= 65 && c <= 90) {  // Upper case letters
-                  result += String.fromCharCode((c - 65 + 13) % 26 + 65);
-              } else if (c >= 97 && c <= 122) {  // Lower case letters
-                  result += String.fromCharCode((c - 97 + 13) % 26 + 97);
-              } else {  // Symbols and spaces
-          result += str.charAt(i);
-          };
-      };
-      return result;
-    };
-    return str; //If there is not # at beginning, it does not have to be decoded
 };
 
 function setFilter() {
