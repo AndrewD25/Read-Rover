@@ -1,31 +1,23 @@
 "use strict";
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    Want To Do (Can do now):
- ------------------------------
-    Refactor and clean up
-    Bug fixes from home computer
-
-
     Ideas for Future Features (Add some over Summer when I have more time and knowledge)
   -----------------------------------------------------------------------------------------
     Media query css?
     Eventually learn to set up a db
         - If usernames created, place username in name of .txt download file
     Separate web page for keeping track of loans?
-    Way to create a wishlist?
+    Way to create a wishlist? (Also maybe a separate webpage?)
     Way to create a list of books that should be added that is faster
         than adding each book to create a "add in detail later" type feature
-    It would be cool to somehow generate stats for a user 
-        - maybe this could be in the TXT file
-
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 
-///// VARIABLES /////
+///// Setup /////
 
-// Get Elements //
-const main = document.getElementById("main");
+const main = document.getElementById("main"); //Where books will be added
+
+// Form elements
 const bookPublisherInput = document.getElementById("publisher");
 const bookSeriesInput = document.getElementById("series");
 const bookContinuityInput = document.getElementById("continuity");
@@ -42,6 +34,8 @@ const replaceBook = document.getElementById("replaceBtn");
 const bookPositionInput = document.getElementById("insertNumber");
 const bookReplaceInput = document.getElementById("replaceNumber");
 const bookFavoriteInput = document.getElementById("favorite");
+
+// Menus and buttons
 const menuHR = document.getElementById("hrAboveBottomMenu");
 const filterMenu = document.getElementById("filterMenu");
 const filterPropertySelect = document.getElementById("filterSelector");
@@ -53,20 +47,22 @@ const addSticker = document.getElementById("addStickerBtn");
 const stickerSelectDiv = document.getElementById("imgGrid");
 const stickerPosition = document.getElementById("stickerNumber");
 
-    //stars
+// Stars
 let formStars = Array.from(document.getElementsByClassName("formStar"));
 let formStarImgs = new Array(5).fill('emptyStar.png');
 
-// Big array that holds all the books //
+// Array that holds all the objects
 let everythingArray = [];
 
-// Initialize Filter //
+// Initialize Filter
 if (localStorage.getItem("currentFiltering") === null) {
     localStorage.setItem("currentFiltering", JSON.stringify(""));
 };
 
+
 ///// FUNCTIONS /////
-function reset() {
+
+function reset() { //Clear and refresh
     localStorage.clear();
     document.location.reload();
 }
@@ -192,6 +188,7 @@ function appendDivider() {
         alert("You can't put a divider there! 😭")
         return;
     };
+
     refreshPage();
 };
 
@@ -288,28 +285,31 @@ function pageOnload() {
 };
 
 function getContrast(r, g, b){
-    // calculate the contrast ratio
+    // Calculate the contrast ratio
     var yiq = ((r*299)+(g*587)+(b*114))/1000;
-    return yiq >= 128;
+    return yiq >= 128; //Return true if black text would appear better on the background, false if white is better
 };
 
 function hexToRgb(hex) {
-    // convert hex color value to RGB values
+    // Convert hex color value to RGB values
     var r = parseInt(hex.substring(1,3), 16);
     var g = parseInt(hex.substring(3,5), 16);
     var b = parseInt(hex.substring(5,7), 16);
-    return {r: r, g: g, b: b};
+    return {r: r, g: g, b: b}; // Return object with r, g, b properties
 };
 
 function drawDivider(divi) {
     let newDivider = document.createElement("div");
     newDivider.classList.add("divider");
     newDivider.style.backgroundColor = divi.color;
+
+    //Get Rgb of the background color and uses it to set better contrasting text color
     let rgb = hexToRgb(divi.color);
-    //Gets Rgb of the background color and uses it to set better contrasting text color
+    
+    //Create elements
     newDivider.style.color = (getContrast(rgb.r, rgb.g, rgb.b)) ? "black" : "white";
     let diviNum = document.createElement("p");
-    diviNum.textContent = everythingArray.indexOf(divi) + 1 +".";
+    diviNum.textContent = everythingArray.indexOf(divi) + 1 +"."; 
     let diviTitle = document.createElement("h2");
     diviTitle.textContent = divi.title
     let diviDel = document.createElement("button");
@@ -317,11 +317,28 @@ function drawDivider(divi) {
     diviDel.textContent = "Delete";
     diviDel.classList.add("diviDel");
     
+    //Append divider elements to document
     newDivider.appendChild(diviNum);
     newDivider.appendChild(diviTitle);
     newDivider.appendChild(diviDel);
     main.appendChild(newDivider);
 
+};
+
+function generateBookTitle(book) {
+    let displayString;
+    if (book.numberType != "No Number") { //Tries first to display something like "Batman Volume 1"
+        displayString = `${book.series} ${book.numberType} ${book.number}`;
+    } else if (book.name !== "" && book.series !== "") { //Then tries something like "Batman The Court of Owls" if there is no number but is a name
+        displayString = `${book.series}: ${book.name}`;
+    } else if (book.series !== "") { //Then something like "Flashpoint" if there is no name or number
+        displayString = book.series
+    } else if (book.name !== "") { //Then something like "Lord of the Flies" if the book has a name but no series
+        displayString = book.name
+    } else { //If no data can be found, defaults to ?s
+        displayString = "???"
+    };
+    return displayString;
 };
 
 function drawBook(book) {
@@ -335,18 +352,7 @@ function drawBook(book) {
 
     let details = document.createElement("details");
     let summary = document.createElement("summary");
-    let displayString;
-    if (book.numberType != "No Number") { //Tries first to display something like "Batman Volume 1"
-        displayString = `${book.series} ${book.numberType} ${book.number}`;
-    } else if (book.name !== "" && book.series !== "") { //Then tries something like "Batman The Court of Owls" if there is no number but is a name
-        displayString = `${book.series}: ${book.name}`;
-    } else if (book.series !== "") { //Then something like "Flashpoint" if there is no name or number
-        displayString = book.series
-    } else if (book.name !== "") { //Then something like "Lord of the Flies" if the book has a name but no series
-        displayString = book.name
-    } else { //If no data can be found, defaults to ?s
-        displayString = "???"
-    }
+    let displayString = generateBookTitle(book);
 
     if (book.hasOwnProperty('sticker')) {
         //Sticker img tag is added to summary innerHTML if there is one
@@ -505,13 +511,13 @@ function drawBook(book) {
     let popBtn = document.createElement("button");
     let deleteBtn = document.createElement("button");
 
-        //u,d,d buttons text
+    //u, d, p, d buttons text
     upBtn.textContent = "Move Up";
     downBtn.textContent = "Move Down";
     popBtn.textContent = "Populate Form"
     deleteBtn.textContent = "Delete Book";
 
-       //u,d,d button classes and ids
+    //u, d, p, d button classes and ids
     buttonsContainer.classList.add("posContainer");
     upDownContainer.setAttribute("id", "upDownContainer")
     popDelContainer.setAttribute("id", "popDelContainer")
@@ -524,12 +530,13 @@ function drawBook(book) {
     deleteBtn.classList.add("posButtons");
     deleteBtn.setAttribute("id", "delete");
 
-        //u,d,d button click event listeners
+    //u, d, p, d button click event listeners
     upBtn.addEventListener("click", moveUp);
     downBtn.addEventListener("click", moveDown);
     popBtn.addEventListener("click", populateForm);
     deleteBtn.addEventListener("click", setUpDel);
 
+    // Append u, d, p, d buttons
     upDownContainer.appendChild(upBtn);
     upDownContainer.appendChild(downBtn);
     popDelContainer.appendChild(popBtn);
@@ -547,6 +554,7 @@ function saveChangesRead(event) {
       //Uses the text of summary, since it is based on the object's index
     let cboxParentIndex = parseInt(event.target.parentElement.parentElement.parentElement.previousElementSibling.textContent) - 1;
     everythingArray[cboxParentIndex].read = event.target.checked;
+
     save();
 };   
 
@@ -557,7 +565,10 @@ function saveChangesFavorite(event) {
     let book = everythingArray[cboxParentIndex];
     let parentDiv = event.target.parentElement.parentElement.parentElement.parentElement.parentElement;
     book.favorite = event.target.checked;
+
     save();
+
+    // Favorite books are yellow and get 5 star rating
     if (book.favorite) {
         parentDiv.classList.add("favoriteBook");
         for (let j = 0; j < book.stars.length; j++) {
@@ -572,6 +583,7 @@ function saveChangesNotes(event) {
     //Functions basically the same way as the saveChangesRead function but runs on Keypress and Blur instead of click
     let notesParentIndex = parseInt(event.target.parentElement.previousElementSibling.textContent) - 1;
     everythingArray[notesParentIndex].notes = event.target.value; 
+
     save();
 };
 
@@ -584,6 +596,7 @@ function moveUp(event) {
         let secondHalf = everythingArray.slice(book.position + 1); 
         everythingArray = [...firstHalf, book, previous, ...secondHalf];
     };
+
     refreshPage();
 };
 
@@ -596,6 +609,7 @@ function moveDown(event) {
         let secondHalf = everythingArray.slice(book.position + 2); 
         everythingArray = [...firstHalf, next, book, ...secondHalf];
     };
+
     refreshPage();
 };
 
@@ -650,13 +664,14 @@ function delBook() { //Remove a book from the array by slicing it and reassignin
         let secondHalf = everythingArray.slice(everythingArray.indexOf(book) + 1);
         everythingArray = [...firstHalf, ...secondHalf];
     };
+
     refreshPage();
 };
 
 function populateForm(event) { //Used to fill the form with the data from a book
     let index = Number(event.target.parentElement.parentElement.parentElement.previousElementSibling.textContent[0]) - 1; //Uses same logic as setUpDiviDel()
     let book = everythingArray[index];
-    console.log(book); //DEL LATER
+
     bookPublisherInput.value = book.publisher;
     bookContinuityInput.value = book.continuity;
     bookSeriesInput.value = book.series;
@@ -676,7 +691,8 @@ function populateForm(event) { //Used to fill the form with the data from a book
 };
 
 /*/ Function to export the data, encoded using rot13     
-               ~Original Export/Import Functions~
+               ~Original Export/Import, Encode/Decode Functions~
+
 // Function to encode a string using rot13
 function rot13Encode(str) {
     let result = '';
@@ -730,7 +746,9 @@ function importData() {
     }
 };*/
 
-//Tool Menu Functions
+// Tool Menu Functions
+
+//Set up filter and divider menus open booleans
 let filterMenuOpen = !((localStorage.getItem("currentFiltering") !== null) && JSON.parse(localStorage.getItem("currentFiltering")) !== "");
 let dividerMenuOpen = false; //Filter menu is sometimes open on refresh, but divider is always closed
 
@@ -752,7 +770,8 @@ function toggleFilterMenu() {
         };
         filterMenu.children[1].style.justifyContent = "center";
     };
-    filterMenuOpen = !filterMenuOpen
+
+    filterMenuOpen = !filterMenuOpen;
 };
 
 function toggleDividerMenu() {
@@ -764,7 +783,8 @@ function toggleDividerMenu() {
         menuHR.classList.remove("hidden");
         dividerMenu.style.display = "block";
     };
-    dividerMenuOpen = !dividerMenuOpen
+
+    dividerMenuOpen = !dividerMenuOpen;
 };
 
 function setFilter() {
@@ -802,7 +822,7 @@ function selectSticker(event) {
 
 function setSticker() {  
     let selectedSticker = stickerToAdd;
-    let wantedBookPosition = stickerPosition.value
+    let wantedBookPosition = stickerPosition.value;
     if (selectedSticker == undefined) {
         alert("You didn't select a sticker! 💀")
         return;
@@ -814,6 +834,7 @@ function setSticker() {
         return;
     };
     everythingArray[wantedBookPosition - 1].sticker = selectedSticker; //Wanted book position - 1 because 0-indexing
+
     refreshPage();
 };
 
@@ -837,11 +858,101 @@ function addNewLines(str) { //Add new lines to the txt file string
       result += str[index];
       index++;
     };
+
     return result;
 };
 
+// Functions to calculate a collection level to be displayed in the txt file download
+function calcXP(arr) {
+    let xp = 0;
+    for (let i = 0; i < arr.length; i++) {
+        console.log(arr[i])
+        if (arr[i].hasOwnProperty("read")) { //Object is a book
+            xp += 50;
+            if (arr[i].read === true) { 
+                xp += 50; //Doubles points if book is read
+            };
+        };
+    };
+    return xp;
+};
+
+function calcLevel(xp) {
+    if (xp <= 0) {
+      return { level: 1, extraXP: 0, toNext: 100 };
+    };
+  
+    let level = 1;
+    let xpThreshold = 0;
+    let xpDifference = 100;
+  
+    while (xp >= xpThreshold + xpDifference) {
+      xpThreshold += xpDifference;
+      xpDifference += 100;
+      level++;
+    };
+  
+    const extraXP = xp - xpThreshold;
+    const toNext = level * 100;
+  
+    return { level, extraXP, toNext };
+};
+
+// Download and Upload Functions
+function generateHeading() { // Creates a fun heading string to be added to a txt file
+    let text = ""
+
+    text += "\n\n" //line 1
+    text += "Hooray, you found the secret stats!"
+    text += "\n\n\n"
+    text += "Your Collection Stats:\n" //line 4
+    text += `${"~".repeat(40)} \n` //line 5
+
+    //Calculate #s of Books, read, and unread (and favorites for later)
+    let books = 0;
+    let read = 0;
+    let favorites = [];
+    for (let i = 0; i < everythingArray.length; i++) {
+        if (everythingArray[i].hasOwnProperty("read")) { //Isbook
+            books++;
+            if (everythingArray[i].read === true) {
+                read++;
+            };
+            if (everythingArray[i].favorite === true) {
+                favorites.push(everythingArray[i]);
+            };
+        };
+    };
+    let unread = books - read; //Unread is the books that are not read
+
+    text += `Books: ${books}\n`; //line 6
+    text += `Read: ${read}\n`; //line 7
+    text += `Unread: ${unread}\n`; //line 8
+    text += "\n" //line 9
+    text += "Favorites:\n" //line 10
+
+    //Generate list of favorite books
+    for (let i = 0; i < favorites.length; i++) {
+        text += `\t- ${generateBookTitle(favorites[i])}\n`;
+    };
+
+    //Text about level
+    let infoLvl = calcLevel(calcXP(everythingArray));
+    text += "\n"
+    text += `You are a level ${infoLvl.level} collector! Earn Collection XP by buying and reading books.\n`;
+    text += "Each book you own is worth 50 CXP, but reading it doubles its value and earns you 100 CXP per book.\n";
+    text += "\n";
+    text += `Next Level: ${infoLvl.level + 1} (${infoLvl.extraXP}/${infoLvl.toNext} CXP) \n`
+    text += `${"~".repeat(40)} \n\n`
+
+    return text;
+};
+
 function downloadTextFile() { //Downloads a string as a .txt file
-    let blob = new Blob([addNewLines(JSON.stringify(everythingArray))], { type: 'text/plain' }); //Downloads JSON of everything array with lines added for readability
+    let heading = generateHeading();
+    let readableArray = addNewLines(JSON.stringify(everythingArray));
+    let str = heading + readableArray;
+    let blob = new Blob([str], { type: 'text/plain' }); //Downloads JSON of everything array with lines added for readability and fun section at top
     let link = document.createElement('a');
     link.setAttribute('href', URL.createObjectURL(blob));
     link.setAttribute('download', 'readrover_data' + '.txt');
@@ -862,13 +973,14 @@ fileInput.addEventListener('change', function() {
         try {
             if (file.type !== 'text/plain') {
                 throw new Error('Invalid file type. Please select a text file.');
-            ;}
+            };
             // File is a valid text file
             let reader = new FileReader();
             reader.onload = function(e) {
                 let contents = e.target.result;
                 let text = contents.toString(); // Convert the file contents to a string
-                text = contents.replace('\n', ''); // Parses out newlines
+                text = text.slice(text.indexOf('[{"p')) // Remove the heading before parsing
+                text = text.replace('\n', ''); // Parses out newlines
                 localStorage.setItem("everythingArray", text);
                 everythingArray = JSON.parse(text);
                 refreshPage();
@@ -890,11 +1002,11 @@ window.onload = pageOnload;
 
 // Tool button onclicks //
 let buttonsArray = document.getElementById("toolButtons").children;
-buttonsArray[0].onclick = downloadTextFile; //Fix these later? Were exportCopy and importData
+buttonsArray[0].onclick = downloadTextFile; //Download and import are found in other JS file
 buttonsArray[1].onclick = importFile;
 buttonsArray[2].onclick = save;
 buttonsArray[3].onclick = showResetModal;
-toggleFilterMenu();
+toggleFilterMenu(); //Filter menu starts opposite of what it needs to be, so this runs to close/open it at beginning
 buttonsArray[4].onclick = toggleFilterMenu;
 buttonsArray[5].onclick = toggleDividerMenu;
 buttonsArray[6].onclick = openStickerModal; //Open sticker modal window
@@ -934,5 +1046,6 @@ document.addEventListener("keydown", function (e) { //Close all modals when esc 
 for (let i = 0; i < stickerSelectDiv.children.length; i++) {
     stickerSelectDiv.children[i].addEventListener("click", selectSticker)
 };
+
 
 
