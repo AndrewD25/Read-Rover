@@ -10,6 +10,7 @@
     Way to create a wishlist? (Also maybe a separate webpage?)
     Way to create a list of books that should be added that is faster
         than adding each book to create a "add in detail later" type feature
+    Brainstorm features I want to add over the summer as I use the tool
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 
@@ -669,7 +670,7 @@ function delBook() { //Remove a book from the array by slicing it and reassignin
 };
 
 function populateForm(event) { //Used to fill the form with the data from a book
-    let index = Number(event.target.parentElement.parentElement.parentElement.previousElementSibling.textContent[0]) - 1; //Uses same logic as setUpDiviDel()
+    let index = parseInt(event.target.parentElement.parentElement.parentElement.previousElementSibling.textContent) - 1; //Uses same logic as setUpDiviDel()
     let book = everythingArray[index];
 
     bookPublisherInput.value = book.publisher;
