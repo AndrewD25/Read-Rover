@@ -944,7 +944,7 @@ function generateHeading() { // Creates a fun heading string to be added to a tx
     text += "Each book you own is worth 50 CXP, but reading it doubles its value and earns you 100 CXP per book.\n";
     text += "\n";
     text += `Next Level: ${infoLvl.level + 1} (${infoLvl.extraXP}/${infoLvl.toNext} CXP) \n`
-    text += `${"~".repeat(40)} \n\n`
+    text += `${"~".repeat(40)} \n\n\n`
 
     return text;
 };
@@ -979,9 +979,13 @@ fileInput.addEventListener('change', function() {
             let reader = new FileReader();
             reader.onload = function(e) {
                 let contents = e.target.result;
+                debugger;
                 let text = contents.toString(); // Convert the file contents to a string
-                text = text.slice(text.indexOf('[{"p')) // Remove the heading before parsing
-                text = text.replace('\n', ''); // Parses out newlines
+                debugger;
+                text = text.slice(text.indexOf('[{"')) // Remove the heading before parsing
+                debugger
+                text = text.replaceAll('\n', ''); // Parses out newlines
+                debugger;
                 localStorage.setItem("everythingArray", text);
                 everythingArray = JSON.parse(text);
                 refreshPage();
