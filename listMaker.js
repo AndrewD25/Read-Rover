@@ -9,7 +9,7 @@
     Separate web page for keeping track of loans?
     Way to create a wishlist? (Also maybe a separate webpage?)
     Way to create a list of books that should be added that is faster
-        than adding each book to create a "add in detail later" type feature
+      than adding each book to create a "add in detail later" type feature
     Brainstorm features I want to add over the summer as I use the tool
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
@@ -679,6 +679,7 @@ function populateForm(event) { //Used to fill the form with the data from a book
     bookNumberTypeInput.value = book.numberType;
     bookNumberInput.value = book.number;
     bookNameInput.value = book.name;
+    bookFormatInput.value = book.format;
     bookReadInput.checked = book.read;
     for (let i = 0; i < 5; i++) { //Iterate over 5 stars
         formStars[i].setAttribute("src", book.stars[i].getAttribute("src"));
