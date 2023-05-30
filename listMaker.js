@@ -384,7 +384,7 @@ function drawBook(book) {
     rightSpan.classList.add("rightSide");
 
     let publisherLabel = document.createElement("p");
-    publisherLabel.textContent = "Publisher:";
+    publisherLabel.textContent = "Publisher: ";
     let publisher = document.createElement("p");
     publisher.innerHTML = book.publisher != "" ? book.publisher : `<i>?</i>`;
     rightSpan.appendChild(publisherLabel);
@@ -392,7 +392,7 @@ function drawBook(book) {
     rightSpan.appendChild(document.createElement("br"));
 
     let continuityLabel = document.createElement("p");
-    continuityLabel.textContent = "Continuity:";
+    continuityLabel.textContent = "Continuity: ";
     let continuity = document.createElement("p");
     continuity.innerHTML = book.continuity != "" ? book.continuity : `<i>?</i>`;    
     rightSpan.appendChild(continuityLabel);
@@ -400,7 +400,7 @@ function drawBook(book) {
     rightSpan.appendChild(document.createElement("br"));
 
     let seriesLabel = document.createElement("p");
-    seriesLabel.textContent = "Series:";
+    seriesLabel.textContent = "Series: ";
     let series = document.createElement("p");
     series.innerHTML = book.series != "" ? book.series : `<i>?</i>`;
     rightSpan.appendChild(seriesLabel);
@@ -408,7 +408,7 @@ function drawBook(book) {
     rightSpan.appendChild(document.createElement("br"));
 
     let numberLabel = document.createElement("p");
-    numberLabel.textContent = book.numberType;
+    numberLabel.textContent = book.numberType + " ";
     let number = document.createElement("p");
     number.textContent = book.numberType != "No Number" ? book.number : "";
     rightSpan.appendChild(numberLabel);
@@ -416,7 +416,7 @@ function drawBook(book) {
     rightSpan.appendChild(document.createElement("br"));
 
     let nameLabel = document.createElement("p");
-    nameLabel.textContent = "Title:";
+    nameLabel.textContent = "Title: ";
     let name = document.createElement("p");
     name.innerHTML = book.name != "" ? book.name : `<i>?</i>`;
     rightSpan.appendChild(nameLabel);
@@ -424,7 +424,7 @@ function drawBook(book) {
     rightSpan.appendChild(document.createElement("br"));
 
     let formatLabel = document.createElement("p");
-    formatLabel.textContent = "Format:";
+    formatLabel.textContent = "Format: ";
     let format = document.createElement("p");
     format.innerHTML = book.format != "" ? book.format : `<i>?</i>`;
     rightSpan.appendChild(formatLabel);

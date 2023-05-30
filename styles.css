@@ -278,9 +278,10 @@ input[type=checkbox] {
     border: 1px solid black;
     width: 55.5vw;
     /*min-width: 550px;*/
-    margin-top: 1vh;
-    float: right;
+    margin-top: 1vw;
+    margin-bottom: 1vw;
     margin-right: 2vw;
+    float: right;
     font-size: 1.5vw;
 }
 
@@ -315,9 +316,12 @@ summary {
 
 .rightSide {
     float: right;
-    width: 49%;
+    width: 48%;
+    max-width: 48%;
     margin-bottom: 10px;
     border-left: 1px dashed black;
+    padding-left: 0.5vw;
+    padding-right: 0.4vw;
 }
 
 .insideDetails > span > img {
