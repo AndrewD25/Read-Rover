@@ -74,7 +74,7 @@ formStars.forEach((item) => { //Set up ability to click on and change stars
         if (x < item.width / 2) { //mouse on left side
             item.setAttribute("src", "halfStar.png");
         } else { //mouse on right side
-            item.setAttribute("src", "fullStar.png")
+            item.setAttribute("src", "fullStar.png");
         }
         for (let j = 0; j < formStars.length; j++) {
             if (j < formStars.indexOf(item)) {
@@ -84,8 +84,18 @@ formStars.forEach((item) => { //Set up ability to click on and change stars
             };
             formStarImgs[j] = formStars[j].getAttribute("src");
         };
+        bookReadInput.checked = true;
     });                     
-});                                     
+});            
+
+bookReadInput.onclick = function () {
+    if (!bookReadInput.checked) { //Detects if the book is marked unread
+        for (let i = 0; i < formStars.length; i++) {
+            formStars[i].setAttribute("src", "emptyStar.png");
+            formStarImgs[i] = formStars[i].getAttribute("src");
+        };
+    };    //This function disables the ability to add a rating to an unread book in the form. Removing 'read' removes the rating
+};
 
 let book;
 function createBook() {
@@ -484,6 +494,8 @@ function drawBook(book) {
                     book.stars[j].setAttribute("src", "fullStar.png");
                 };
             };
+            readLabel.children[0].checked = true;
+            book.read = true;
             save();
         });                     
     }); 
@@ -554,7 +566,15 @@ function saveChangesRead(event) {
     //Get index of the book object that corresponds with the checklist in everything array
       //Uses the text of summary, since it is based on the object's index
     let cboxParentIndex = parseInt(event.target.parentElement.parentElement.parentElement.previousElementSibling.textContent) - 1;
-    everythingArray[cboxParentIndex].read = event.target.checked;
+    let book = everythingArray[cboxParentIndex];
+    book.read = event.target.checked;
+
+    if (!book.read) {
+        book.rating = ['emptyStar.png', 'emptyStar.png', 'emptyStar.png', 'emptyStar.png', 'emptyStar.png'];
+        for (let i = 0; i < book.stars.length; i++) {
+            book.stars[i].setAttribute('src', book.rating[i]);
+        };  //This condition disables the ability to add a rating to an unread book. Removing 'read' removes the rating
+    };
 
     save();
 };   
@@ -957,7 +977,15 @@ function downloadTextFile() { //Downloads a string as a .txt file
     let blob = new Blob([str], { type: 'text/plain' }); //Downloads JSON of everything array with lines added for readability and fun section at top
     let link = document.createElement('a');
     link.setAttribute('href', URL.createObjectURL(blob));
-    link.setAttribute('download', 'readrover_data' + '.txt');
+
+    const d = new Date(); //Get the current date
+    let month = String(d.getMonth() + 1); //Months are 0 indexed (0-11), so add 1 to get correct num
+    month = (month.length < 2) ? "0" + month : month; //Add 0 if month is single digit
+    let day = String(d.getDate()); //Days are not 0 indexed (1-31)
+    day = (day.length < 2) ? "0" + day : day; //Add 0 if day is single digit
+    let year = String(d.getFullYear());
+
+    link.setAttribute('download', `Readrover Data ${month}-${day}-${year}` + '.txt'); //concatenating the .txt is a redundancy
     link.style.display = 'none';
     document.body.appendChild(link);
     link.click();
