@@ -290,7 +290,9 @@ input[type=checkbox] {
 }
 
 .sticker { /*Stickers on books - at some point: create a media query to fix stickers sizing*/
-    width: 3vw;
+    width: 2.5vw;
+    position: relative;
+    top: -0.1vw;
 }
 
 details {
