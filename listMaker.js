@@ -298,7 +298,7 @@ function pageOnload() {
 function getContrast(r, g, b){
     // Calculate the contrast ratio
     var yiq = ((r*299)+(g*587)+(b*114))/1000;
-    return yiq >= 128; //Return true if black text would appear better on the background, false if white is better
+    return yiq >= 64; //Return true if black text would appear better on the background, false if white is better
 };
 
 function hexToRgb(hex) {
