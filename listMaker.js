@@ -118,14 +118,22 @@ function createBook() {
 
     //// Fix Values that are left blank ////
     if (book.number != Number(book.number) || book.number === "") {
+        book.numberType = "No Number";  //Any book without a number is marked as no number
+    };
+
+    if (book.numberType === "Un-numbered") {
+        book.number = ""; //Any book set to No Number will have its number removed and text fixed
         book.numberType = "No Number";
     };
+
     if (book.position != Number(book.position)) {
         book.position = everythingArray.length;
     };
+
     if (book.continuity === "") {
         book.continuity = "N/A";
     };
+
     book.position -= 1;
 
     return book;
@@ -283,7 +291,7 @@ function pageOnload() {
                         };
                         if (draw) drawBook(everythingArray[i]);
                         break;
-                    default: //These are just, "If any other specific book property includes the 'includes' variable"
+                    default: //These are just: "If any other specific book property includes the 'includes' variable"
                         if (everythingArray[i][filterBy].toLowerCase().includes(includes)) {
                             drawBook(everythingArray[i]);
                         };
@@ -365,11 +373,12 @@ function drawBook(book) {
     let summary = document.createElement("summary");
     let displayString = generateBookTitle(book);
 
+    let bookNumber = Number(everythingArray.indexOf(book)) + 1; //The num that will be displayed next to books
     if (book.hasOwnProperty('sticker')) {
         //Sticker img tag is added to summary innerHTML if there is one
-        summary.innerHTML = `${Number(everythingArray.indexOf(book)) + 1}.<span class="alignRight">${displayString}&nbsp;&nbsp;&nbsp;<img class="sticker" src="${book.sticker}"></span>`;
+        summary.innerHTML = `${bookNumber}.<span class="alignRight">${displayString}&nbsp;&nbsp;&nbsp;<img class="sticker" src="${book.sticker}"></span>`;
     } else {
-        summary.innerHTML = `${Number(everythingArray.indexOf(book)) + 1}.<span class="alignRight">${displayString}</span>`;
+        summary.innerHTML = `${bookNumber}.<span class="alignRight">${displayString}</span>`;
     }
 
     main.appendChild(newDiv);
