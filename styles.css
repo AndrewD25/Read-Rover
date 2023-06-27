@@ -382,9 +382,11 @@ summary {
 
 #populate {
     background-color: rgb(97, 195, 219);
+    display: none; /*REMOVE WHEN POPULATE FORM BUTTON FIXED*/
 }
 
 #delete {
+    margin-left: 13vw; /*REMOVE WHEN POPULATE FORM BUTTON FIXED*/
     background-color: rgb(255, 61, 61);
 }
 

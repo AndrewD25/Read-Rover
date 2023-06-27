@@ -506,6 +506,7 @@ function drawBook(book) {
             readLabel.children[0].checked = true;
             book.read = true;
             save();
+
         });                     
     }); 
     rightSpan.appendChild(ratingBox);
@@ -586,6 +587,7 @@ function saveChangesRead(event) {
     };
 
     save();
+
 };   
 
 function saveChangesFavorite(event) {
@@ -714,6 +716,7 @@ function populateForm(event) { //Used to fill the form with the data from a book
         formStars[i].setAttribute("src", book.stars[i].getAttribute("src"));
         formStarImgs = book.rating;
     };
+
     bookFavoriteInput.checked = book.favorite;
     bookNotesInput.value = book.notes;
     bookImageInput.value = book.image;
