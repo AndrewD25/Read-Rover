@@ -70,6 +70,8 @@ function reset() { //Clear and refresh
 
 formStars.forEach((item) => { //Set up ability to click on and change stars
     item.addEventListener('click', (event) => {
+        console.log("run");
+
         let x = event.pageX - item.offsetLeft;
         if (x < item.width / 2) { //mouse on left side
             item.setAttribute("src", "halfStar.png");
@@ -85,6 +87,8 @@ formStars.forEach((item) => { //Set up ability to click on and change stars
             formStarImgs[j] = formStars[j].getAttribute("src");
         };
         bookReadInput.checked = true;
+        
+
     });                     
 });            
 
@@ -175,7 +179,7 @@ function appendAfter() {
     let firstHalf = everythingArray.slice(0, book.position + 1);
     let secondHalf = everythingArray.slice(book.position + 1);
     everythingArray = [...firstHalf, book, ...secondHalf];
-
+    
     refreshPage();
 };
 
@@ -190,7 +194,7 @@ function replace() {
     let firstHalf = everythingArray.slice(0, book.position - 1);
     let secondHalf = everythingArray.slice(book.position);
     everythingArray = [...firstHalf, book, ...secondHalf];
-
+    
     refreshPage();
 };
 
@@ -503,6 +507,7 @@ function drawBook(book) {
                     book.stars[j].setAttribute("src", "fullStar.png");
                 };
             };
+
             readLabel.children[0].checked = true;
             book.read = true;
             save();
@@ -714,7 +719,7 @@ function populateForm(event) { //Used to fill the form with the data from a book
     bookReadInput.checked = book.read;
     for (let i = 0; i < 5; i++) { //Iterate over 5 stars
         formStars[i].setAttribute("src", book.stars[i].getAttribute("src"));
-        formStarImgs = book.rating;
+        formStarImgs = [...book.rating];
     };
 
     bookFavoriteInput.checked = book.favorite;

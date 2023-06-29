@@ -1,0 +1,29 @@
+     	//Line 50
+	// Variable for populate form debugging
+	let populatedBookInfo = "";
+
+
+	 //line 94
+	//if (populatedBookInfo !== "") {
+            //everythingArray[populatedBookInfo[0]].rating = populatedBookInfo[1];
+            //There was a bug that caused populate form to affect the rating of the book it was copied from
+             //So the populated info var and this conditional prevent that from causing problems
+        //}
+
+
+
+	//line 513
+	/*if (populatedBookInfo !== "") {
+                if (book.position === populatedBookInfo[0]) {
+                    let newRating = [...book.rating] //Create copy so changes from "pop. form error" don't affect this var
+                    populatedBookInfo[1] = newRating; 
+                    // Checks to make sure populatedBookInfo var won't mess up a changed rating
+                };
+            };*/
+
+
+
+	//line 714
+	let bookRating = [...book.rating]; //Create copy so changes from "pop. form error" don't affect this var
+    	console.log(book.rating);
+    	populatedBookInfo = [index, bookRating]; // Used to avoid errors with rating
