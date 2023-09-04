@@ -11,6 +11,7 @@ body {
     background-size: 100%;
     margin: 0;
     margin-bottom: 8;
+    scroll-behavior: smooth;
     /*background-repeat: no-repeat;
     background-color: powderblue;*/
 }
@@ -59,6 +60,57 @@ body {
     padding-top: 1vh;
 }
 
+#tabSelect {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+#tabSelect ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#tabSelect li {
+    background-color: rgb(202, 202, 202);
+    font-size: calc(2px + 0.9vw);
+    padding: 0.7vw;
+}
+
+#tabSelect li:hover { /*Come up with a better fix later*/
+    background-color: rgb(153, 153, 153);
+    font-size: calc(2px + 0.9vw);
+    padding: 0.7vw;
+}
+
+/*Create borders between flex items in tabselect*/
+.separator {
+    background-color: black !important; 
+    width: 0.5px;
+    height: 1.9vw;
+    padding: 0px !important;
+}
+
+/*Set left box default display values*/
+#home {
+    display: none;
+}
+
+#addBooksForm {
+    display: block;
+}
+
+#hyperlinkSection {
+    display: none;
+}
+
+#readRandom {
+    display: none;
+}
 
 /*Book-Input Form*/
 .content > form {
@@ -127,8 +179,17 @@ input[type=checkbox] {
 }
 
 #imgLink {
-    width: 55%
+    width: 65% /*If using upload button, decrease to 45-50*/
 }
+
+/*#imgUploadBtn {
+    width: 15%;
+    text-align: center;
+    margin: auto;
+    white-space: nowrap;
+    text-overflow: clip;
+    font-size: calc(4px + 0.9vw);
+}*/
 
 .centeringDiv {
     width: 33%;

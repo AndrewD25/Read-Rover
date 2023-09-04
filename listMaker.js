@@ -18,6 +18,14 @@
 
 const main = document.getElementById("main"); //Where books will be added
 
+//toolbox tabs
+const home = document.getElementById("home");
+const addBooksForm = document.getElementById("addBooksForm");
+const hyperlinkSection = document.getElementById("hyperlinkSection");
+const readRandom = document.getElementById("readRandom");
+const allTabs = [home, addBooksForm, hyperlinkSection, readRandom];
+const tabButtons = document.getElementsByClassName("tab-btn");
+
 // Form elements
 const bookPublisherInput = document.getElementById("publisher");
 const bookSeriesInput = document.getElementById("series");
@@ -35,6 +43,9 @@ const replaceBook = document.getElementById("replaceBtn");
 const bookPositionInput = document.getElementById("insertNumber");
 const bookReplaceInput = document.getElementById("replaceNumber");
 const bookFavoriteInput = document.getElementById("favorite");
+
+// Hyperlinks page element/s
+const navlinks = document.getElementById("navlinks");
 
 // Menus and buttons
 const menuHR = document.getElementById("hrAboveBottomMenu");
@@ -66,9 +77,46 @@ if (localStorage.getItem("currentFiltering") === null) {
 function reset() { //Clear and refresh
     localStorage.clear();
     document.location.reload();
-}
+};
 
-formStars.forEach((item) => { //Set up ability to click on and change stars
+
+//Functions for tabbing on left side
+function showHome() {
+    for(let i = 0; i < allTabs.length; i++) {
+        allTabs[i].style.display = "none";
+    };
+    home.style.display = "block";
+};
+
+function showAddBooksForm() {
+    for(let i = 0; i < allTabs.length; i++) {
+        allTabs[i].style.display = "none";
+    };
+    addBooksForm.style.display = "block";
+};
+
+function showHyperlinkSection() {
+    for(let i = 0; i < allTabs.length; i++) {
+        allTabs[i].style.display = "none";
+    };
+    hyperlinkSection.style.display = "block";
+};
+
+function showReadRandom() {
+    for(let i = 0; i < allTabs.length; i++) {
+        allTabs[i].style.display = "none";
+    };
+    readRandom.style.display = "block";
+};
+
+tabButtons[0].onclick = showHome;
+tabButtons[1].onclick = showAddBooksForm;
+tabButtons[2].onclick = showHyperlinkSection;
+tabButtons[3].onclick = showReadRandom;
+
+
+//Set up ability to click on and change stars
+formStars.forEach((item) => { 
     item.addEventListener('click', (event) => {
         console.log("run");
 
@@ -324,6 +372,7 @@ function hexToRgb(hex) {
 function drawDivider(divi) {
     let newDivider = document.createElement("div");
     newDivider.classList.add("divider");
+    newDivider.setAttribute("id", divi.title);
     newDivider.style.backgroundColor = divi.color;
 
     //Get Rgb of the background color and uses it to set better contrasting text color
@@ -727,6 +776,9 @@ function populateForm(event) { //Used to fill the form with the data from a book
     bookImageInput.value = book.image;
     bookPositionInput.value = book.position + 1;
     bookReplaceInput.value = book.position + 1; // Sets position to more easily replace the one being copied
+
+    //Display the add books form
+    showAddBooksForm();
 };
 
 /*/ Function to export the data, encoded using rot13     
@@ -1043,6 +1095,21 @@ fileInput.addEventListener('change', function() {
         };
     };
 });
+
+//Set up hyperlinks navigation menu to dividers
+function updateHyperlinks() {
+    for (let i = 0; i < everythingArray.length; i++) {
+        if (everythingArray[i].hasOwnProperty("before")) { //Means the object stores a Divider
+            let newlist = document.createElement("li");
+            let newlink = document.createElement("a");
+            newlink.textContent = everythingArray[i].title;
+            newlink.href = `#${everythingArray[i].title}`;
+
+            newlist.appendChild(newlink);
+            navlinks.children[0].appendChild(newlist);
+        }
+    }
+}
 
 //// Set up Onclicks and onloads ////
 addBookBefore.onclick = appendBefore;

@@ -14,8 +14,23 @@
             <div class="darkBackground">
                 <img id="titleLogo" src="logov8.png" alt="Read Rover logo">
             </div>
+            <div id="tabSelect">
+                <ul>
+                    <li class="tab-btn">Home</li>
+                      <li class="separator" aria-hidden="true" role="presentation"></li>
+                    <li class="tab-btn">Add Books</li>
+                      <li class="separator" aria-hidden="true" role="presentation"></li>
+                    <li class="tab-btn">Hyperlinks</li>
+                      <li class="separator" aria-hidden="true" role="presentation"></li>
+                    <li class="tab-btn">Random Book Picker</li>
+                </ul>
+            </div>
+            <!--Home Page-->
+            <div id="home" class="content">
+                <p>Home</p>
+            </div>
             <!--Form that adds books-->
-            <div class="content">
+            <div class="content" id="addBooksForm">
                 <form>
                     <label for="publisher">Publisher:</label>
                     <input type="text" id="publisher" name="publisher">
@@ -91,6 +106,19 @@
                         <input type="number" id="replaceNumber" name="replaceNumber" min="1">
                     </div>
                 </form> 
+            </div>
+            <!--Navigation links to jump around on the page-->
+            <div id="hyperlinkSection" class="content">
+                <h2>Hyperlinks</h2>
+                <nav id="navlinks">
+                    <ul>
+                        <!--Links will be added here using JS-->
+                    </ul>
+                </nav> 
+            </div>
+            <!--Random book picker-->
+            <div id="readRandom" class="content">
+                <h2>Random Book Picker</h2>
             </div>
             <hr>
             <div id="toolButtons"> 
