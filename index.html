@@ -16,18 +16,14 @@
             </div>
             <div id="tabSelect">
                 <ul>
-                    <li class="tab-btn">Home</li>
-                      <li class="separator" aria-hidden="true" role="presentation"></li>
                     <li class="tab-btn">Add Books</li>
                       <li class="separator" aria-hidden="true" role="presentation"></li>
                     <li class="tab-btn">Hyperlinks</li>
                       <li class="separator" aria-hidden="true" role="presentation"></li>
                     <li class="tab-btn">Random Book Picker</li>
+                      <li class="separator" aria-hidden="true" role="presentation"></li>
+                    <li class="tab-btn">Loans</li>
                 </ul>
-            </div>
-            <!--Home Page-->
-            <div id="home" class="content">
-                <p>Home</p>
             </div>
             <!--Form that adds books-->
             <div class="content" id="addBooksForm">
@@ -109,7 +105,7 @@
             </div>
             <!--Navigation links to jump around on the page-->
             <div id="hyperlinkSection" class="content">
-                <h2>Hyperlinks</h2>
+                <h2>Divider Links</h2>
                 <nav id="navlinks">
                     <ul>
                         <!--Links will be added here using JS-->
@@ -119,8 +115,15 @@
             <!--Random book picker-->
             <div id="readRandom" class="content">
                 <h2>Random Book Picker</h2>
+
+                <p>You Should Read...</p>
+                <p id="randomBookText">[Generated Book Appears Here]</p>
+                <p id="readBookCheckbox"><input type="checkbox"> Include Read Books</p>
+                <button id="randomGenerator">Randomize</button>
             </div>
+
             <hr>
+            
             <div id="toolButtons"> 
                 <button title="Download Data"><img src="downloadIcon.png" alt="Download"></button> <!--Changing these buttons to work with files, change later?-->
                 <button title="Upload Data"><img src="uploadIcon.png" alt="Upload"></button>

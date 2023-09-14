@@ -19,11 +19,10 @@
 const main = document.getElementById("main"); //Where books will be added
 
 //toolbox tabs
-const home = document.getElementById("home");
 const addBooksForm = document.getElementById("addBooksForm");
 const hyperlinkSection = document.getElementById("hyperlinkSection");
 const readRandom = document.getElementById("readRandom");
-const allTabs = [home, addBooksForm, hyperlinkSection, readRandom];
+const allTabs = [addBooksForm, hyperlinkSection, readRandom];
 const tabButtons = document.getElementsByClassName("tab-btn");
 
 // Form elements
@@ -46,6 +45,11 @@ const bookFavoriteInput = document.getElementById("favorite");
 
 // Hyperlinks page element/s
 const navlinks = document.getElementById("navlinks");
+
+//Read Random page element/s
+randomBookText = document.getElementById("randomBookText");
+readBookCheckbox = document.getElementById('readBookCheckbox');
+randomGeneratorBtn = document.getElementById("randomGenerator");
 
 // Menus and buttons
 const menuHR = document.getElementById("hrAboveBottomMenu");
@@ -81,13 +85,6 @@ function reset() { //Clear and refresh
 
 
 //Functions for tabbing on left side
-function showHome() {
-    for(let i = 0; i < allTabs.length; i++) {
-        allTabs[i].style.display = "none";
-    };
-    home.style.display = "block";
-};
-
 function showAddBooksForm() {
     for(let i = 0; i < allTabs.length; i++) {
         allTabs[i].style.display = "none";
@@ -109,10 +106,9 @@ function showReadRandom() {
     readRandom.style.display = "block";
 };
 
-tabButtons[0].onclick = showHome;
-tabButtons[1].onclick = showAddBooksForm;
-tabButtons[2].onclick = showHyperlinkSection;
-tabButtons[3].onclick = showReadRandom;
+tabButtons[0].onclick = showAddBooksForm;
+tabButtons[1].onclick = showHyperlinkSection;
+tabButtons[2].onclick = showReadRandom;
 
 
 //Set up ability to click on and change stars
@@ -353,6 +349,9 @@ function pageOnload() {
     };
     //Book add form position input defaults to the highest position numbered book
     bookPositionInput.value = everythingArray.length;
+
+    //Update navigation links
+    updateHyperlinks();
 };
 
 function getContrast(r, g, b){
@@ -395,6 +394,8 @@ function drawDivider(divi) {
     newDivider.appendChild(diviDel);
     main.appendChild(newDivider);
 
+    //Update navigation links
+    updateHyperlinks();
 };
 
 function generateBookTitle(book) {
@@ -1098,6 +1099,7 @@ fileInput.addEventListener('change', function() {
 
 //Set up hyperlinks navigation menu to dividers
 function updateHyperlinks() {
+    navlinks.children[0].innerHTML = "";
     for (let i = 0; i < everythingArray.length; i++) {
         if (everythingArray[i].hasOwnProperty("before")) { //Means the object stores a Divider
             let newlist = document.createElement("li");

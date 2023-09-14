@@ -2,6 +2,10 @@
  / Large Sections /
 ////////////////*/
 
+html {
+    scroll-behavior: smooth;
+}
+
 html, body, input, select, button, label, textarea, span, details, summary {
     cursor: url("DP.cur") 15 15, auto;
 }
@@ -11,7 +15,6 @@ body {
     background-size: 100%;
     margin: 0;
     margin-bottom: 8;
-    scroll-behavior: smooth;
     /*background-repeat: no-repeat;
     background-color: powderblue;*/
 }
@@ -96,12 +99,9 @@ body {
 }
 
 /*Set left box default display values*/
-#home {
-    display: none;
-}
-
 #addBooksForm {
     display: block;
+    margin-bottom: 0.5vh;
 }
 
 #hyperlinkSection {
@@ -227,6 +227,44 @@ input[type=checkbox] {
 #toolButtons img {
     width: 100%;
 }
+
+hr {
+    margin-top: 0;
+    padding-top: 0;
+}
+
+/*Hyperlinks*/
+#hyperlinkSection {
+    height: 50vh;
+    overflow-y: scroll;
+}
+
+#hyperlinkSection h2 {
+    text-align: left !important;
+    margin-left: 5%;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+}
+
+#navlinks {
+    margin-top: 0px;
+    padding-top: 0px;
+    margin-left: 10%;
+    display: flex;
+    justify-content: left;
+}
+
+#navlinks li {
+    width: 50%;
+}
+
+#navlinks li > a{
+    color: black;
+}
+
+/*Read Random Tool*/
+
+
 
   /*////////////
  / Tool Menus /
