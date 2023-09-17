@@ -47,9 +47,9 @@ const bookFavoriteInput = document.getElementById("favorite");
 const navlinks = document.getElementById("navlinks");
 
 //Read Random page element/s
-randomBookText = document.getElementById("randomBookText");
-readBookCheckbox = document.getElementById('readBookCheckbox');
-randomGeneratorBtn = document.getElementById("randomGenerator");
+const randomBookText = document.getElementById("randomBookText");
+const readBookCheckbox = document.getElementById('readBookCheckbox');
+const randomGeneratorBtn = document.getElementById("randomGenerator");
 
 // Menus and buttons
 const menuHR = document.getElementById("hrAboveBottomMenu");
